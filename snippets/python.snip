@@ -1,0 +1,61 @@
+snippet     flaskstaticweb
+abbr        from flask ...
+prev_word   '^'
+    #!/usr/bin/env python
+    # -*- coding: utf-8 -*-
+
+    from flask import Flask
+    app = Flask(__name__)
+    
+    @app.route('/', defaults={"filename":"index.html"})
+    @app.route('/<path:filename>')
+    def page(filename):
+        return app.send_static_file(filename)
+
+    if __name__ == '__main__':
+        app.run(host="0.0.0.0", debug=True)
+
+snippet     flaskbaseweb
+abbr        from flask ...
+prev_word   '^'
+    #!/usr/bin/env python
+    # -*- coding: utf-8 -*-
+    from flask import Flask, request, session, g, redirect, url_for, \
+                      abort, render_template, flash, send_from_directory, \
+                      render_template_string
+
+    app = Flask(__name__)
+
+    tmp_index="""
+    <html><head></head><body>{{ message }}</body></html>
+    """
+    
+    @app.route('/')
+    def index():
+        message = "hello world!" 
+        return render_template_string(tmp_index, message=message)
+
+    if __name__ == '__main__':
+        app.run(host="0.0.0.0", debug=True)
+
+snippet     route
+abbr        from flask ...
+prev_word   '^'
+    @app.route('${1:route}')
+    def ${2:name}(${3:args}):
+        ${4:pass}
+
+snippet     doctest
+abbr        import doctest...
+prev_word   '^'
+    if __name__ == '__main__':
+        import doctest
+        doctest.testmod(optionflags = (doctest.NORMALIZE_WHITESPACE | doctest.ELLIPSIS))
+
+
+snippet     coding
+abbr        # -*- coding...
+prev_word   '^'
+    # -*- coding: utf-8 -*-
+
+

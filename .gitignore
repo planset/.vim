@@ -1,0 +1,8 @@
+backup/*
+swap/*
+bundle/*
+
+!backup/empty
+!swap/empty
+.netrwhist
+
