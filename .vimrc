@@ -109,6 +109,36 @@ set helplang=ja,en
 "他で編集されたら読み込み直す
 set autoread
 
+if has('gui_running')
+  " フォント設定:
+  if has('win32')
+    " Windows用
+    set guifont=MS_Gothic:h12:cSHIFTJIS
+    " 行間隔の設定
+    set linespace=1
+    " 一部のUCS文字の幅を自動計測して決める
+    if has('kaoriya')
+      set ambiwidth=auto
+    endif
+  elseif has('mac')
+    set guifont=DejaVu\ Sans\ Mono:h12
+    set guifontwide=ヒラギノ角ゴ\ ProN\ W6:h12
+  elseif has('xfontset')
+    " UNIX用 (xfontsetを使用)
+    set guifontset=a14,r14,k14
+  endif
+
+  " Remove menu bar
+  set guioptions-=m
+  " Remove toolbar
+  set guioptions-=T
+
+  set lines=30 columns=90
+  set imdisable
+
+endif 
+
+
 "set ruler
 set backspace=2
 
@@ -434,5 +464,4 @@ if has('vim_starting') &&  file_name == ""
 endif
 " CTRL + e : Toggle NERDTree window
 noremap <c-e> :<c-u>:NERDTreeToggle<cr>
-
 
