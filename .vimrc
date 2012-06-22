@@ -109,6 +109,7 @@ set helplang=ja,en
 "他で編集されたら読み込み直す
 set autoread
 
+" setting font
 if has('gui_running')
   " フォント設定:
   if has('win32')
@@ -137,6 +138,43 @@ if has('gui_running')
   "set imdisable
 
 endif 
+
+"---------------------------------------------------------------------------
+" 日本語入力に関する設定:
+"
+if has('multi_byte_ime') || has('xim') || has('gui_macvim')
+  " IME ON時のカーソルの色を設定(設定例:紫)
+  highlight CursorIM guibg=Purple guifg=NONE
+  " 挿入モード・検索モードでのデフォルトのIME状態設定
+  set iminsert=0 imsearch=0
+  if has('xim') && has('GUI_GTK')
+    " XIMの入力開始キーを設定:
+    " 下記の s-space はShift+Spaceの意味でkinput2+canna用設定
+    "set imactivatekey=s-space
+  endif
+  " 挿入モードでのIME状態を記憶させない場合、次行のコメントを解除
+  "inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
+endif
+set noimdisable
+set imdisableactivate
+
+"---------------------------------------------------------------------------
+" マウスに関する設定:
+"
+" 解説:
+" mousefocusは幾つか問題(一例:ウィンドウを分割しているラインにカーソルがあっ
+" ている時の挙動)があるのでデフォルトでは設定しない。Windowsではmousehide
+" が、マウスカーソルをVimのタイトルバーに置き日本語を入力するとチラチラする
+" という問題を引き起す。
+"
+" どのモードでもマウスを使えるようにする
+set mouse=a
+" マウスの移動でフォーカスを自動的に切替えない (mousefocus:切替る)
+set nomousefocus
+" 入力時にマウスポインタを隠す (nomousehide:隠さない)
+set mousehide
+" ビジュアル選択(D&D他)を自動的にクリップボードへ (:help guioptions_a)
+"set guioptions+=a
 
 
 "set ruler
@@ -224,8 +262,8 @@ set tenc=utf-8
 " ファイル種別毎の設定
 " .vim/ftplugin/*
 "
-filetype on
-filetype plugin on
+"filetype on
+"filetype plugin on
 
 "
 "
