@@ -134,7 +134,7 @@ if has('gui_running')
   set guioptions-=T
 
   set lines=30 columns=90
-  set imdisable
+  "set imdisable
 
 endif 
 
