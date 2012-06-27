@@ -400,7 +400,7 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 " zencoding
 "
 let g:user_zen_settings = {
-\   'indentation':'    ',
+\   'indentation':'  ',
 \   'lang':'ja',
 \ }
 
