@@ -154,9 +154,9 @@ if has('multi_byte_ime') || has('xim') || has('gui_macvim')
   endif
   " 挿入モードでのIME状態を記憶させない場合、次行のコメントを解除
   "inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
+  set noimdisable
+  set imdisableactivate
 endif
-set noimdisable
-set imdisableactivate
 
 "---------------------------------------------------------------------------
 " マウスに関する設定:
