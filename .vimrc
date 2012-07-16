@@ -10,6 +10,7 @@ call vundle#rc()
 " original repos on github
 Bundle 'Shougo/vimproc.git'
 Bundle 'Shougo/vimshell.git'
+Bundle 'Shougo/neocomplcache-snippets-complete.git'
 
 Bundle 'Shougo/unite.vim.git'
 Bundle 'h1mesuke/unite-outline.git'
@@ -356,7 +357,6 @@ augroup END
 " neocomplcache
 " 
 " スニペットファイルの配置場所
-let g:NeoComplCache_SnippetsDir = '~/.vim/snippets'
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_underbar_completion = 1
 let g:neocomplcache_dictionary_filetype_lists = {
@@ -365,13 +365,9 @@ let g:neocomplcache_dictionary_filetype_lists = {
 \}
 
 " Plugin key-mappings.
-imap <C-k>     <Plug>(neocomplcache_snippets_expand)
-smap <C-k>     <Plug>(neocomplcache_snippets_expand)
 inoremap <expr><C-g>     neocomplcache#undo_completion()
 inoremap <expr><C-l>     neocomplcache#complete_common_string()
 
-" SuperTab like snippets behavior.
-"imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " Recommended key-mappings.
 " <CR>: close popup and save indent.
@@ -395,6 +391,14 @@ autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
+
+
+" neocomplecache_snippets_complete
+let g:neocomplecache_snippets_dir = '~/.vim/snippets'
+imap <C-k>     <Plug>(neocomplcache_snippets_expand)
+smap <C-k>     <Plug>(neocomplcache_snippets_expand)
+"imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+command! -nargs=* Nes NeoComplCacheEditSnippets
 
 "
 " zencoding
