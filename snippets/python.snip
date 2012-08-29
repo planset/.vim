@@ -59,3 +59,13 @@ prev_word   '^'
     # -*- coding: utf-8 -*-
 
 
+snippet     prop
+abbr        property ...
+prev_word   '^'
+	def ${1:foo}():
+		doc = "${2:The $1 property.}"
+		def fget(self):
+			${3:return self._$1}
+		def fset(self, value):
+			${4:self._$1 = value}
+

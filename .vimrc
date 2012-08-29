@@ -36,6 +36,8 @@ Bundle 'lambdalisue/nose.vim'
 
 Bundle 'lambdalisue/vim-django-support'
 
+Bundle 'msanders/snipmate.vim'
+Bundle 'nvie/vim-flake8'
 filetype plugin indent on
 
 
@@ -506,4 +508,27 @@ if has('vim_starting') &&  file_name == ""
 endif
 " CTRL + e : Toggle NERDTree window
 noremap <c-e> :<c-u>:NERDTreeToggle<cr>
+
+
+"
+" vim-flake8
+"
+"autocmd FileType python call s:python_settings()
+"function! s:python_settings()
+"  autocmd BufWritePost <buffer> call Flake8()
+"endfunction
+
+"
+" vimproc
+"
+if has('mac')
+  let g:vimproc_dll_path = $HOME . '/.vim/bundle/vimproc/autoload/vimproc_mac.so'
+elseif has('win32')
+  let g:vimproc_dll_path = $HOME . '/.vim/bundle/vimproc/autoload/vimproc_win32.dll'
+elseif has('win64')
+  let g:vimproc_dll_path = $HOME . '/.vim/bundle/vimproc/autoload/vimproc_win64.dll'
+endif
+
+
+
 
