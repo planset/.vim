@@ -38,6 +38,9 @@ Bundle 'lambdalisue/vim-django-support'
 
 Bundle 'msanders/snipmate.vim'
 Bundle 'nvie/vim-flake8'
+
+Bundle 'vim-scripts/taglist.vim'
+Bundle 'fs111/pydoc.vim'
 filetype plugin indent on
 
 
@@ -530,5 +533,9 @@ elseif has('win64')
 endif
 
 
-
+"
+" pydoc
+"
+nnoremap <silent> <buffer> <Space>hw :call <SID>ShowPyDoc('<C-R><C-W>', 1)<CR>
+nnoremap <silent> <buffer> <Space>hk :call <SID>ShowPyDoc('<C-R><C-W>', 0)<CR>
 
