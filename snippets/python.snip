@@ -69,3 +69,19 @@ prev_word   '^'
 		def fset(self, value):
 			${4:self._$1 = value}
 
+
+snippet     s
+abbr        self. ...
+prev_word   '^'
+	self.${1}
+
+
+snippet     testm
+abbr        def test_...
+prev_word   '^'
+	def test_${1:method_name}(self):
+		"""${2:method documentation}"""
+		${3:pass}
+
+
+
