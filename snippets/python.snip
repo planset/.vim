@@ -92,7 +92,6 @@ prev_word   '^'
 		def fset(self, value):
 			${4:self._$1 = value}
 
-
 snippet     s
 abbr        self. ...
 prev_word   '^'
@@ -106,5 +105,77 @@ prev_word   '^'
 		"""${2:method documentation}"""
 		${3:pass}
 
+snippet     _
+abbr        __define__
+prev_word   '^'
+	__${1:init}__${2}
 
+# New Class
+snippet cl
+	class ${1:ClassName}(${2:object}):
+		"""${3:docstring for $1}"""
+		def __init__(self, ${4:arg}):
+			${5:super($1, self).__init__()}
+			self.$4 = $4
+			${6}
+
+snippet #!
+	#!/usr/bin/env python
+
+snippet imp
+	import ${1:module}
+
+snippet docs
+	'''
+	File: ${1:`Filename('$1.py', 'foo.py')`}
+	Author: ${2:`g:snips_author`}
+	Description: ${3}
+	'''
+
+snippet wh
+	while ${1:condition}:
+		${2:# code...}
+
+snippet for
+	for ${1:needle} in ${2:haystack}:
+		${3:# code...}
+
+snippet ld
+	${1:var} = lambda ${2:vars} : ${3:action}
+
+snippet try 
+abbr    Try/Except 
+	try:
+		${1:pass}
+	except ${2:Exception}, ${3:e}:
+		${4:raise $3}
+
+snippet trye
+abbr    Try/Except/Else
+	try:
+		${1:pass}
+	except ${2:Exception}, ${3:e}:
+		${4:raise $3}
+	else:
+		${5:pass}
+
+snippet tryf
+abbr    Try/Except/Finally
+	try:
+		${1:pass}
+	except ${2:Exception}, ${3:e}:
+		${4:raise $3}
+	finally:
+		${5:pass}
+
+snippet tryef
+abbr    Try/Except/Else/Finally
+	try:
+		${1:pass}
+	except ${2:Exception}, ${3:e}:
+		${4:raise $3}
+	else:
+		${5:pass}
+	finally:
+		${6:pass}
 

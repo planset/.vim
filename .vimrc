@@ -10,7 +10,10 @@ call vundle#rc()
 " original repos on github
 Bundle 'Shougo/vimproc.git'
 Bundle 'Shougo/vimshell.git'
-Bundle 'Shougo/neocomplcache-snippets-complete.git'
+Bundle 'vim-scripts/sudo.vim.git'
+
+Bundle 'scrooloose/nerdtree.git'
+Bundle 'fuenor/qfixgrep.git'
 
 Bundle 'Shougo/unite.vim.git'
 Bundle 'h1mesuke/unite-outline.git'
@@ -18,25 +21,22 @@ Bundle 'ujihisa/unite-colorscheme.git'
 Bundle 'hakobe/unite-script.git'
 
 Bundle 'Shougo/neocomplcache.git'
+Bundle 'Shougo/neocomplcache-snippets-complete.git'
 Bundle 'vim-scripts/pythoncomplete.git'
+"Bundle 'msanders/snipmate.vim'
 
 Bundle 'mattn/zencoding-vim.git'
-Bundle 'vim-scripts/TwitVim.git'
-Bundle 'thinca/vim-ref.git'
-Bundle 'vim-scripts/python_fold.git'
-Bundle 'mitechie/pyflakes-pathogen'
-Bundle 'vim-scripts/sudo.vim.git'
-
 Bundle 'digitaltoad/vim-jade.git'
-Bundle 'scrooloose/nerdtree.git'
-Bundle 'fuenor/qfixgrep.git'
 
+Bundle 'vim-scripts/TwitVim.git'
+
+Bundle 'thinca/vim-ref.git'
+
+Bundle 'vim-scripts/python_fold.git'
 Bundle 'reinh/vim-makegreen'
 Bundle 'lambdalisue/nose.vim'
-
 Bundle 'lambdalisue/vim-django-support'
-
-Bundle 'msanders/snipmate.vim'
+Bundle 'mitechie/pyflakes-pathogen'
 Bundle 'nvie/vim-flake8'
 
 Bundle 'vim-scripts/taglist.vim'
