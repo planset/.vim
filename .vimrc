@@ -43,6 +43,7 @@ Bundle 'vim-scripts/taglist.vim'
 Bundle 'fs111/pydoc.vim'
 
 Bundle 'sontek/rope-vim'
+Bundle 'tpope/vim-surround'
 
 filetype plugin indent on
 
@@ -412,9 +413,16 @@ command! -nargs=* Nes NeoComplCacheEditSnippets
 " zencoding
 "
 let g:user_zen_settings = {
-\   'indentation':'  ',
-\   'lang':'ja',
-\ }
+      \  'lang' : 'ja',
+      \  'html' : {
+      \    'filters' : 'html',
+      \    'indentation' : '  '
+      \  },
+      \  'css' : {
+      \    'filters' : 'fc',
+      \  },
+      \ }
+
 
 
 "
@@ -541,3 +549,14 @@ endif
 "
 " nnoremap <silent> <buffer> K :call <SID>ShowPyDoc(<SID>ExpandModulePath(), 1)<CR>
 "
+
+"
+" surround.vim
+"
+" gettext 'foo' を _('foo') に、 "foo" を _("foo") 
+let g:surround_103 = "_('\r')"  " 103 = g
+let g:surround_71 = "_(\"\r\")" " 71 = G
+nmap g' cs'g
+nmap g" cs"G
+
+
