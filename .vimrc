@@ -41,6 +41,9 @@ Bundle 'nvie/vim-flake8'
 
 Bundle 'vim-scripts/taglist.vim'
 Bundle 'fs111/pydoc.vim'
+
+Bundle 'sontek/rope-vim'
+
 filetype plugin indent on
 
 
@@ -536,6 +539,5 @@ endif
 "
 " pydoc
 "
-nnoremap <silent> <buffer> <Space>hw :call <SID>ShowPyDoc('<C-R><C-W>', 1)<CR>
-nnoremap <silent> <buffer> <Space>hk :call <SID>ShowPyDoc('<C-R><C-W>', 0)<CR>
-
+" nnoremap <silent> <buffer> K :call <SID>ShowPyDoc(<SID>ExpandModulePath(), 1)<CR>
+"
