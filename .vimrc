@@ -53,7 +53,10 @@ filetype plugin indent on
 " vim settings
 "
 " =======================================================================
- 
+
+" leader 
+let mapleader = "\\"
+
 " ウインドウの幅
 "set columns=85
 " ウインドウの高さ
@@ -477,7 +480,7 @@ endif
 "
 " unite outline
 "
-nnoremap <silent> ,uo :<C-u>Unite outline<CR>
+nnoremap <silent> <Space>o :<C-u>Unite outline<CR>
 
 
 "

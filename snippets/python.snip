@@ -81,6 +81,20 @@ abbr		# -*- coding...
 prev_word   '^'
 	# -*- coding: utf-8 -*-
 
+snippet	 moduledoc
+abbr		# -*- coding...
+prev_word   '^'
+	"""
+		${1:package.module}
+		~~~~~~~~~~~~~~~~~~~
+	
+		${2:A brief description goes here.}
+	
+		:copyright: (c) 2012 by Daisuke Igarashi.
+		:license: ${3:BSD}, see LICENSE for more details.
+	"""
+	${4}
+
 
 snippet     prop
 abbr        property ...
@@ -122,7 +136,7 @@ snippet cl
 snippet #!
 	#!/usr/bin/env python
 
-snippet imp
+snippet im
 	import ${1:module}
 
 snippet docs
@@ -131,6 +145,13 @@ snippet docs
 	Author: ${2:`g:snips_author`}
 	Description: ${3}
 	'''
+
+snippet param
+        :param ${1:param_name}: {2:description}
+
+snippet meth
+        :meth:`${1:method_name}` ${2}
+
 
 snippet wh
 	while ${1:condition}:
