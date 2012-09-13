@@ -16,7 +16,7 @@ prev_word '^'
 
 		def test_method(self):
 			${3:pass}
-			unittest.assertEqual(1, 1)
+			self.assertEqual(1, 1)
 
 	if __name__ == '__main__':
 		unittest.main()
@@ -116,8 +116,9 @@ snippet     testm
 abbr        def test_...
 prev_word   '^'
 	def test_${1:method_name}(self):
-		"""${2:method documentation}"""
-		${3:pass}
+		${2:pass}
+		self.assertEqual(
+                
 
 snippet     _
 abbr        __define__
