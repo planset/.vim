@@ -45,6 +45,7 @@ Bundle 'fs111/pydoc.vim'
 Bundle 'sontek/rope-vim'
 Bundle 'tpope/vim-surround'
 
+Bundle 'tyru/open-browser.vim.git'
 filetype plugin indent on
 
 
@@ -166,7 +167,7 @@ if has('multi_byte_ime') || has('xim') || has('gui_macvim')
     "set imactivatekey=s-space
   endif
   " 挿入モードでのIME状態を記憶させない場合、次行のコメントを解除
-  "inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
+  inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
   set noimdisable
   set imdisableactivate
 endif
@@ -293,15 +294,24 @@ syntax enable
 "-----------------------------------------------------------------------
 " キーマップ変更
 "-----------------------------------------------------------------------
-map <F2> <ESC>:bp<CR>
-map <F3> <ESC>:bn<CR>
-map <F4> <ESC>:bw<CR>
+" map/noremap    normal mode
+" nmap/nnoremap  normal mode
+" imap/inoremap  insert mode
+" cmap/cnoremap  command line mode 
+" vmap/vnoremap  visual mode
+" map!/noremap!  insert and command line mode
+
+nnoremap <F2> <ESC>:bp<CR>
+nnoremap <F3> <ESC>:bn<CR>
+nnoremap <F4> <ESC>:bw<CR>
+
 nnoremap gf <C-w>gf
 
-inoremap <C-j> <esc>
-vnoremap <C-j> <esc>
-inoremap <C-[> <esc>
-vnoremap <C-[> <esc>
+
+inoremap <C-j> <ESC>
+vnoremap <C-j> <ESC>
+inoremap <C-[> <ESC>
+vnoremap <C-[> <ESC>
 
 nnoremap <Space>w :<C-u>write<Cr>
 nnoremap <Space>q :<C-u>quit<Cr>
@@ -312,23 +322,46 @@ nnoremap # g#
 nnoremap <C-l> gt
 nnoremap <C-h> gT
 
-inoremap <silent> <esc> <esc>:set iminsert=0<cr>
+"inoremap <silent> <ESC> <ESC>:set iminsert=0<cr>
 
 "ビジュアルモードで選択して検索
 vnoremap * "zy:let @/ = @z<CR>n
 
 "ビジュアルモードで選択して置換。とりあえず/だけエスケープしとく
-vnoremap <C-s> "zy:%s/<C-r>=escape(@z,'/')<CR>/
+vnoremap <C-s> "zy:%s/<C-r>=ESCape(@z,'/')<CR>/
 
-"入力モードで削除
-inoremap <C-d> <Del>
-inoremap <C-h> <BackSpace>
 
 "pasteモードトグル
 nnoremap <Space>tp :<C-u>set paste!<CR>
 
 " ; -> :
 nnoremap ; :
+
+
+
+"
+" input support
+"
+inoremap <C-e> <END>
+inoremap <C-a> <HOME>
+inoremap <C-f> <RIGHT>
+inoremap <C-b> <LEFT>
+inoremap <C-d> <Del>
+inoremap <C-h> <BackSpace>
+
+"inoremap { {}<LEFT>
+"inoremap [ []<LEFT>
+"inoremap ( ()<LEFT>
+"inoremap " ""<LEFT>
+"inoremap ' ''<LEFT>
+"vnoremap { "zdi{<C-R>z}<ESC>
+"vnoremap [ "zdi[<C-R>z]<ESC>
+"vnoremap ( "zdi(<C-R>z)<ESC>
+"vnoremap " "zdi"<C-R>z"<ESC>
+"vnoremap ' "zdi'<C-R>z'<ESC>
+
+" カンマの後に空白を自動挿入 
+inoremap , , 
 
 
 "
@@ -390,7 +423,7 @@ inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
 inoremap <expr><C-y>  neocomplcache#close_popup()
-inoremap <expr><C-e>  neocomplcache#cancel_popup()
+"inoremap <expr><C-e>  neocomplcache#cancel_popup()
 
 nnoremap <silent> <Space>es  :<C-u>NeoComplCacheEditSnippets<CR> 
 
@@ -404,11 +437,12 @@ autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 
-
 " neocomplecache_snippets_complete
 let g:neocomplecache_snippets_dir = '~/.vim/snippets'
 imap <C-k>     <Plug>(neocomplcache_snippets_expand)
 smap <C-k>     <Plug>(neocomplcache_snippets_expand)
+"imap <TAB>     <Plug>(neocomplcache_snippets_expand)
+"smap <TAB>     <Plug>(neocomplcache_snippets_expand)
 "imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
 command! -nargs=* Nes NeoComplCacheEditSnippets
 
@@ -524,7 +558,7 @@ if has('vim_starting') &&  file_name == ""
     autocmd VimEnter * execute 'NERDTree ./'
 endif
 " CTRL + e : Toggle NERDTree window
-noremap <c-e> :<c-u>:NERDTreeToggle<cr>
+nnoremap <c-e> :<c-u>:NERDTreeToggle<cr>
 
 
 "
@@ -562,4 +596,11 @@ let g:surround_71 = "_(\"\r\")" " 71 = G
 nmap g' cs'g
 nmap g" cs"G
 
+"
+" open-browser.vim
+" http://vim-users.jp/2011/08/hack225/
+"
+let g:netrw_nogx = 1 " disable netrw's gx mapping.
+nmap gx <Plug>(openbrowser-smart-search)
+vmap gx <Plug>(openbrowser-smart-search)
 

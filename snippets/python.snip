@@ -43,12 +43,14 @@ abbr		from flask ...
 prev_word   '^'
 	#!/usr/bin/env python
 	# -*- coding: utf-8 -*-
-	from flask import Flask, request, session, g, redirect, url_for, \
-					  abort, render_template, flash, send_from_directory, \
-					  render_template_string
-
+	from flask import (Flask, request, session, g, redirect,
+	                   url_for, render_template, flash,
+	                   send_from_directory, abort,
+	                   render_template, flash, send_from_directory,
+	                   render_template_string)
+	
 	app = Flask(__name__)
-
+	
 	tmp_index="""
 	<html><head></head><body>{{ message }}</body></html>
 	"""
@@ -82,7 +84,7 @@ prev_word   '^'
 	# -*- coding: utf-8 -*-
 
 snippet	 moduledoc
-abbr		# -*- coding...
+abbr		package.module...
 prev_word   '^'
 	"""
 		${1:package.module}
@@ -134,28 +136,32 @@ snippet cl
 			self.$4 = $4
 			${6}
 
+snippet super
+	super(${1}, self).__init__(${2})
+
 snippet pyfile
 	#!/usr/bin/env python
 	# -*- coding: utf-8 -*-
+	
+	${1}
 	
 	# vim: tabstop=8 expandtab shiftwidth=4 softtabstop=4
 
 snippet im
 	import ${1:module}
 
-snippet docs
-	'''
-	File: ${1:`Filename('$1.py', 'foo.py')`}
-	Author: ${2:`g:snips_author`}
-	Description: ${3}
-	'''
+snippet fr
+	from ${1:module} import ${2:module}
 
 snippet param
-        :param ${1:param_name}: {2:description}
+        :param ${1:param_name}: ${2:description}
 
 snippet meth
         :meth:`${1:method_name}` ${2}
 
+snippet comp
+	[ ${1} for ${2} in ${3} ]
+	${4}
 
 snippet wh
 	while ${1:condition}:
