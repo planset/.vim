@@ -136,7 +136,7 @@ if has('gui_running')
       set ambiwidth=auto
     endif
   elseif has('mac')
-    set guifont=DejaVu\ Sans\ Mono:h12
+    set guifont=DejaVu\ Sans\ Mono:h13
     set guifontwide=ヒラギノ角ゴ\ ProN\ W6:h12
   elseif has('xfontset')
     " UNIX用 (xfontsetを使用)
@@ -354,14 +354,14 @@ inoremap <C-h> <BackSpace>
 "inoremap ( ()<LEFT>
 "inoremap " ""<LEFT>
 "inoremap ' ''<LEFT>
-"vnoremap { "zdi{<C-R>z}<ESC>
-"vnoremap [ "zdi[<C-R>z]<ESC>
-"vnoremap ( "zdi(<C-R>z)<ESC>
+"vnoremap { {zdi{<C-R>z}<ESC>
+"vnoremap [ [zdi[<C-R>z]<ESC>
+"vnoremap ( (zdi(<C-R>z)<ESC>
 "vnoremap " "zdi"<C-R>z"<ESC>
 "vnoremap ' "zdi'<C-R>z'<ESC>
 
 " カンマの後に空白を自動挿入 
-inoremap , , 
+"inoremap , , 
 
 
 "
@@ -373,10 +373,26 @@ function! s:Exec()
 command! Exec call <SID>Exec()
 map <silent> <Space>p :call <SID>Exec()<CR>
 
+"
+" python helper
+"
+function! s:ExecPython3()
+  exe "VimProcBang python3 %" 
+:endfunction
+command! ExecPython3 call <SID>ExecPython3()
+nnoremap <silent> <Space>P :call <SID>ExecPython3()<CR>
+
 function! s:ExecNose()
   exe "VimProcBang nosetests"
 :endfunction
-map <silent> <Space>@ :call <SID>ExecNose()<CR>
+nnoremap <silent> <Space>@ :call <SID>ExecNose()<CR>
+
+function! s:SphinxBuild()
+  exe "VimProcBang make html; open _build/html/index.html"
+:endfunction
+command! SphinxBuild call <SID>SphinxBuild()
+nnoremap <silent> <Space>sb :call <SID>SphinxBuild()<CR>
+
 
 "
 " create directory automatically
@@ -391,6 +407,8 @@ augroup vimrc-auto-mkdir
         endif
     endfunction
 augroup END
+
+
 
 " =======================================================================
 "
@@ -407,6 +425,9 @@ let g:neocomplcache_enable_underbar_completion = 1
 let g:neocomplcache_dictionary_filetype_lists = {
   \'default':'',
   \'vimshell':$HOME.'/.vimshell_hist',
+\}
+let g:neocomplcache_ignore_composite_filetype = {
+  \'python.unit': 'python',
 \}
 
 " Plugin key-mappings.
@@ -486,6 +507,7 @@ nnoremap <silent> ,um :<C-u>Unite file_mru<CR>
 nnoremap <silent> ,ua :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
 " pydoc
 nnoremap <silent> ,up :<C-u>Unite ref/pydoc<CR>
+nnoremap <silent> <Space>up :<C-u>Unite ref/pydoc<CR>
 
 " unite.vim上でのキーマッピング
 autocmd FileType unite call s:unite_my_settings()
@@ -603,4 +625,9 @@ nmap g" cs"G
 let g:netrw_nogx = 1 " disable netrw's gx mapping.
 nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
+
+"
+" taglist-vim
+"
+nnoremap <silent> <Space>tt :TlistToggle<CR><C-w><C-w>
 
