@@ -581,6 +581,7 @@ if has('vim_starting') &&  file_name == ""
 endif
 " CTRL + e : Toggle NERDTree window
 nnoremap <c-e> :<c-u>:NERDTreeToggle<cr>
+let NERDTreeIgnore = ['\.pyc$']
 
 
 "
