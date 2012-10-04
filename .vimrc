@@ -46,6 +46,7 @@ Bundle 'sontek/rope-vim'
 Bundle 'tpope/vim-surround'
 
 Bundle 'tyru/open-browser.vim.git'
+Bundle 'leafgarland/typescript-vim'
 filetype plugin indent on
 
 
