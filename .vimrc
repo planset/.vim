@@ -40,13 +40,14 @@ Bundle 'mitechie/pyflakes-pathogen'
 Bundle 'nvie/vim-flake8'
 
 Bundle 'vim-scripts/taglist.vim'
-Bundle 'fs111/pydoc.vim'
+"Bundle 'fs111/pydoc.vim'
 
 Bundle 'sontek/rope-vim'
 Bundle 'tpope/vim-surround'
 
 Bundle 'tyru/open-browser.vim.git'
 Bundle 'leafgarland/typescript-vim'
+Bundle 'davidhalter/jedi-vim'
 filetype plugin indent on
 
 
@@ -55,6 +56,9 @@ filetype plugin indent on
 " vim settings
 "
 " =======================================================================
+
+"" python path 
+"let $PYTHON_DLL = "/opt/python2.7/lib/libpython2.7.dylib"
 
 " leader 
 let mapleader = "\\"
@@ -86,9 +90,10 @@ set backupdir=$HOME/.vim/backup
 "スワップファイル用のディレクトリ
 set directory=$HOME/.vim/swap
 "バックアップファイルを使わない
-"set nobackup
+set nobackup
+set nowritebackup
 "スワップファイルを使わない
-"set noswapfile
+set noswapfile
 "ファイル保存ダイアログの初期ディレクトリをバッファファイル位置に設定
 set browsedir=buffer
 "クリップボードをWindowsと連携
@@ -302,11 +307,11 @@ syntax enable
 " vmap/vnoremap  visual mode
 " map!/noremap!  insert and command line mode
 
+nnoremap <silent> <Space>er  :tabe ~/.vimrc<CR>
+
 nnoremap <F2> <ESC>:bp<CR>
 nnoremap <F3> <ESC>:bn<CR>
 nnoremap <F4> <ESC>:bw<CR>
-
-nnoremap gf <C-w>gf
 
 
 inoremap <C-j> <ESC>
@@ -317,11 +322,26 @@ vnoremap <C-[> <ESC>
 nnoremap <Space>w :<C-u>write<Cr>
 nnoremap <Space>q :<C-u>quit<Cr>
 
+inoremap <C-v> <ESC>pa
 nnoremap * g*
 nnoremap # g#
 
-nnoremap <C-l> gt
-nnoremap <C-h> gT
+vnoremap < <gv
+vnoremap > >gv
+
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+nnoremap <C-m> gt
+nnoremap <C-n> gT
+
+cmap w!! %!sudo tee > /dev/null %
+
+" automatically reload vimrc when it's saved
+au BufWritePost .vimrc so ~/.vimrc
+
 
 "inoremap <silent> <ESC> <ESC>:set iminsert=0<cr>
 
@@ -350,6 +370,8 @@ inoremap <C-b> <LEFT>
 inoremap <C-d> <Del>
 inoremap <C-h> <BackSpace>
 
+inoremap kj <Esc>
+
 "inoremap { {}<LEFT>
 "inoremap [ []<LEFT>
 "inoremap ( ()<LEFT>
@@ -363,6 +385,99 @@ inoremap <C-h> <BackSpace>
 
 " カンマの後に空白を自動挿入 
 "inoremap , , 
+
+" git-diff-aware version of gf commands.
+nnoremap <expr> gf  <SID>do_git_diff_aware_gf('gf')
+nnoremap <expr> gF  <SID>do_git_diff_aware_gf('gF')
+nnoremap <expr> <C-w>f  <SID>do_git_diff_aware_gf('<C-w>f')
+nnoremap <expr> <C-w><C-f>  <SID>do_git_diff_aware_gf('<C-w><C-f>')
+nnoremap <expr> <C-w>F  <SID>do_git_diff_aware_gf('<C-w>F')
+nnoremap <expr> <C-w>gf  <SID>do_git_diff_aware_gf('<C-w>gf')
+nnoremap <expr> <C-w>gF  <SID>do_git_diff_aware_gf('<C-w>gF')
+
+nnoremap gf <C-w>gF
+nnoremap gF <C-w>gf
+
+function! s:do_git_diff_aware_gf(command)
+  let target_path = expand('<cfile>')
+  if target_path =~# '^[ab]/'  " with a peculiar prefix of git-diff(1)?
+    if s:gfexists(target_path)
+      return a:command
+    else
+      " BUGS: Side effect - Cursor position is changed.
+      let [_, c] = searchpos('\f\+', 'cenW')
+      return c . '|' . 'v' . (len(target_path) - 2 - 1) . 'h' . a:command
+    endif
+  else
+    return a:command
+  endif
+endfunction
+
+function! s:gfexists(target_path)
+  if filereadable(a:target_path) || isdirectory(a:target_path)
+    return 1
+  endif
+endfunction
+
+function! s:openfile(target_path, line, opt)
+  if strlen(a:target_path) > 0
+    if a:opt == 'E'
+      exe 'e ' . a:target_path
+    elseif a:opt == 'S'
+      exe 'sp ' . a:target_path
+    elseif a:opt == 'V'
+      exe 'vs ' . a:target_path
+    elseif a:opt == 'T'
+      exe 'tabe ' . a:target_path
+    endif
+    if a:line >= 0
+      exe a:line . 'G'
+    endif
+    return 1
+  else
+    return 0
+  endif
+endfunction
+
+function! s:do_flask_gf(target_path)
+  if a:target_path =~# '\.html$'
+    let target_path = 'templates/' . a:target_path
+    if s:gfexists(target_path)
+      return target_path
+    endif
+  endif
+  return ''
+endfunction
+
+function! s:do_git_gf(target_path)
+  if a:target_path =~# '^[ab]/' 
+    return substitute(a:target_path, '^[ab]/', '', '')
+  endif
+  return ''
+endfunction
+
+function! s:do_custom_gf(opt)
+  let rawpath = expand('<cfile>')
+  let pathlist = split(rawpath, ':')
+  let target_path = pathlist[0]
+  let line = -1
+  if len(pathlist) > 1
+    let line = pathlist[1]
+  endif
+
+  if s:gfexists(target_path)
+    call s:openfile(target_path, line, a:opt)
+  elseif s:openfile(s:do_flask_gf(target_path), line, a:opt)
+  elseif s:openfile(s:do_git_gf(target_path), line, a:opt)
+  else
+  endif
+endfunction
+
+nnoremap <silent> gbe :call <SID>do_custom_gf('E')<CR>
+nnoremap <silent> gbs :call <SID>do_custom_gf('S')<CR>
+nnoremap <silent> gbv :call <SID>do_custom_gf('V')<CR>
+nnoremap <silent> gbt :call <SID>do_custom_gf('T')<CR>
+
 
 
 "
@@ -393,6 +508,8 @@ function! s:SphinxBuild()
 :endfunction
 command! SphinxBuild call <SID>SphinxBuild()
 nnoremap <silent> <Space>sb :call <SID>SphinxBuild()<CR>
+
+
 
 
 "
@@ -430,6 +547,11 @@ let g:neocomplcache_dictionary_filetype_lists = {
 let g:neocomplcache_ignore_composite_filetype = {
   \'python.unit': 'python',
 \}
+"if !exists('g:neocomplcache_omni_patterns')
+"  let g:neocomplcache_omni_patterns = {}
+"endif
+"let g:neocomplcache_omni_patterns.python = ''
+
 
 " Plugin key-mappings.
 inoremap <expr><C-g>     neocomplcache#undo_completion()
@@ -632,4 +754,21 @@ vmap gx <Plug>(openbrowser-smart-search)
 " taglist-vim
 "
 nnoremap <silent> <Space>tt :TlistToggle<CR><C-w><C-w>
+
+"
+" jedi-vim
+" commit: a87af78be3ffffb27dc556937f34f34e2a8491dc
+"
+let g:jedi#auto_initialization = 1              " default is 1
+let g:jedi#goto_command = "<C-d>"               " default is <leader>g
+let g:jedi#get_definition_command = "<leader>d" " default is <leader>d
+let g:jedi#pydoc = "K"                          " default is K
+let g:jedi#use_tabs_not_buffers = 1             " default is 1
+let g:jedi#popup_on_dot = 0                     " default is 1
+let g:jedi#rename_command = "<leader>r"         " default is <leader>r
+let g:jedi#related_names_command = "<leader>n"  " default is <leader>n
+let g:jedi#show_function_definition = 1         " default is 1
+"let g:jedi#function_definition_escape = "'≡'"   " default is '≡'
+"let g:jedi#auto_close_doc = 1                   " default is 1
+autocmd FileType python let b:did_ftplugin = 1
 
