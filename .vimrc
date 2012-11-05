@@ -9,45 +9,50 @@ call vundle#rc()
 
 " original repos on github
 Bundle 'Shougo/vimproc.git'
-Bundle 'Shougo/vimshell.git'
+"Bundle 'Shougo/vimshell.git'
 Bundle 'vim-scripts/sudo.vim.git'
 
 Bundle 'scrooloose/nerdtree.git'
 Bundle 'fuenor/qfixgrep.git'
+"Bundle 'vim-scripts/taglist.vim'
+Bundle 'tpope/vim-surround'
+Bundle 'tyru/open-browser.vim.git'
+Bundle 'altercation/vim-colors-solarized.git'
 
+" unite
 Bundle 'Shougo/unite.vim.git'
 Bundle 'h1mesuke/unite-outline.git'
 Bundle 'ujihisa/unite-colorscheme.git'
 Bundle 'hakobe/unite-script.git'
 
+" neocomple
 Bundle 'Shougo/neocomplcache.git'
-Bundle 'Shougo/neocomplcache-snippets-complete.git'
+Bundle 'Shougo/neosnippet'
 Bundle 'vim-scripts/pythoncomplete.git'
 "Bundle 'msanders/snipmate.vim'
 
+" html/javascript/css/scss
 Bundle 'mattn/zencoding-vim.git'
 Bundle 'digitaltoad/vim-jade.git'
+Bundle 'hail2u/vim-css3-syntax.git'
+Bundle 'cakebaker/scss-syntax.vim'
+Bundle 'leafgarland/typescript-vim'
 
-Bundle 'vim-scripts/TwitVim.git'
+"Bundle 'vim-scripts/TwitVim.git'
 
-Bundle 'thinca/vim-ref.git'
-
+" python
+"Bundle 'thinca/vim-ref.git'
+"Bundle 'fs111/pydoc.vim'
 Bundle 'vim-scripts/python_fold.git'
 Bundle 'reinh/vim-makegreen'
 Bundle 'lambdalisue/nose.vim'
 Bundle 'lambdalisue/vim-django-support'
 Bundle 'mitechie/pyflakes-pathogen'
 Bundle 'nvie/vim-flake8'
-
-Bundle 'vim-scripts/taglist.vim'
-"Bundle 'fs111/pydoc.vim'
-
-Bundle 'sontek/rope-vim'
-Bundle 'tpope/vim-surround'
-
-Bundle 'tyru/open-browser.vim.git'
-Bundle 'leafgarland/typescript-vim'
 Bundle 'davidhalter/jedi-vim'
+Bundle 'sontek/rope-vim'
+
+
 filetype plugin indent on
 
 
@@ -337,10 +342,13 @@ nnoremap <C-l> <C-w>l
 nnoremap <C-m> gt
 nnoremap <C-n> gT
 
+"nnoremap <C-h> gT
+"nnoremap <C-l> gt
+
 cmap w!! %!sudo tee > /dev/null %
 
 " automatically reload vimrc when it's saved
-au BufWritePost .vimrc so ~/.vimrc
+"au BufWritePost .vimrc so ~/.vimrc
 
 
 "inoremap <silent> <ESC> <ESC>:set iminsert=0<cr>
@@ -387,16 +395,16 @@ inoremap kj <Esc>
 "inoremap , , 
 
 " git-diff-aware version of gf commands.
-nnoremap <expr> gf  <SID>do_git_diff_aware_gf('gf')
-nnoremap <expr> gF  <SID>do_git_diff_aware_gf('gF')
+nnoremap <expr> gf  <SID>do_git_diff_aware_gf('<C-w>gF') " gf
+nnoremap <expr> gF  <SID>do_git_diff_aware_gf('<C-w>gf') " gF
 nnoremap <expr> <C-w>f  <SID>do_git_diff_aware_gf('<C-w>f')
 nnoremap <expr> <C-w><C-f>  <SID>do_git_diff_aware_gf('<C-w><C-f>')
 nnoremap <expr> <C-w>F  <SID>do_git_diff_aware_gf('<C-w>F')
 nnoremap <expr> <C-w>gf  <SID>do_git_diff_aware_gf('<C-w>gf')
 nnoremap <expr> <C-w>gF  <SID>do_git_diff_aware_gf('<C-w>gF')
 
-nnoremap gf <C-w>gF
-nnoremap gF <C-w>gf
+"nnoremap gf <C-w>gF
+"nnoremap gF <C-w>gf
 
 function! s:do_git_diff_aware_gf(command)
   let target_path = expand('<cfile>')
@@ -581,14 +589,17 @@ autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 
-" neocomplecache_snippets_complete
-let g:neocomplecache_snippets_dir = '~/.vim/snippets'
-imap <C-k>     <Plug>(neocomplcache_snippets_expand)
-smap <C-k>     <Plug>(neocomplcache_snippets_expand)
-"imap <TAB>     <Plug>(neocomplcache_snippets_expand)
-"smap <TAB>     <Plug>(neocomplcache_snippets_expand)
-"imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
-command! -nargs=* Nes NeoComplCacheEditSnippets
+" neosnippets
+let g:neosnippet#snippets_directory = '~/.vim/snippets'
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+imap <C-K>     <Plug>(neosnippet_jump_or_expand)
+imap <C-s>  <Plug>(neosnippet_start_unite_snippet)
+
+command! -nargs=* Nes NeoSnippetEdit
+nnoremap <silent> <Space>es :<C-u>NeoSnippetEdit -split<CR>
 
 "
 " zencoding
@@ -662,21 +673,21 @@ endif
 nnoremap <silent> <Space>o :<C-u>Unite outline<CR>
 
 
+""
+"" twitvim
+"" 
+"let twitvim_count = 40
+"nnoremap ,tp :<C-u>PosttoTwitter<CR>
+"nnoremap ,tf :<C-u>FriendsTwitter<CR><C-w>j
+"nnoremap ,tu :<C-u>UserTwitter<CR><C-w>j
+"nnoremap ,tr :<C-u>RepliesTwitter<CR><C-w>j
+"nnoremap ,tn :<C-u>NextTwitter<CR>
+"nnoremap ,tl :<C-u>ListTwitter<space> 
 "
-" twitvim
-" 
-let twitvim_count = 40
-nnoremap ,tp :<C-u>PosttoTwitter<CR>
-nnoremap ,tf :<C-u>FriendsTwitter<CR><C-w>j
-nnoremap ,tu :<C-u>UserTwitter<CR><C-w>j
-nnoremap ,tr :<C-u>RepliesTwitter<CR><C-w>j
-nnoremap ,tn :<C-u>NextTwitter<CR>
-nnoremap ,tl :<C-u>ListTwitter<space> 
-
-autocmd FileType twitvim call s:twitvim_my_settings()
-function! s:twitvim_my_settings()
-  set nowrap
-endfunction
+"autocmd FileType twitvim call s:twitvim_my_settings()
+"function! s:twitvim_my_settings()
+"  set nowrap
+"endfunction
 
 
 "
@@ -704,7 +715,7 @@ if has('vim_starting') &&  file_name == ""
 endif
 " CTRL + e : Toggle NERDTree window
 nnoremap <c-e> :<c-u>:NERDTreeToggle<cr>
-let NERDTreeIgnore = ['\.pyc$']
+let NERDTreeIgnore = ['\.pyc$', '\.class$']
 
 
 "
@@ -750,10 +761,10 @@ let g:netrw_nogx = 1 " disable netrw's gx mapping.
 nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
 
-"
-" taglist-vim
-"
-nnoremap <silent> <Space>tt :TlistToggle<CR><C-w><C-w>
+""
+"" taglist-vim
+""
+"nnoremap <silent> <Space>tt :TlistToggle<CR><C-w><C-w>
 
 "
 " jedi-vim
@@ -763,7 +774,7 @@ let g:jedi#auto_initialization = 1              " default is 1
 let g:jedi#goto_command = "<C-d>"               " default is <leader>g
 let g:jedi#get_definition_command = "<leader>d" " default is <leader>d
 let g:jedi#pydoc = "K"                          " default is K
-let g:jedi#use_tabs_not_buffers = 1             " default is 1
+let g:jedi#use_tabs_not_buffers = 0             " default is 1
 let g:jedi#popup_on_dot = 0                     " default is 1
 let g:jedi#rename_command = "<leader>r"         " default is <leader>r
 let g:jedi#related_names_command = "<leader>n"  " default is <leader>n
