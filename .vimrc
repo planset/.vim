@@ -327,7 +327,8 @@ vnoremap <C-[> <ESC>
 nnoremap <Space>w :<C-u>write<Cr>
 nnoremap <Space>q :<C-u>quit<Cr>
 
-inoremap <C-v> <ESC>pa
+inoremap <C-v> <ESC>"0pa
+vnoremap <C-v> "0p
 nnoremap * g*
 nnoremap # g#
 
