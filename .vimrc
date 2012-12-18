@@ -9,7 +9,7 @@ call vundle#rc()
 
 " original repos on github
 Bundle 'Shougo/vimproc.git'
-"Bundle 'Shougo/vimshell.git'
+Bundle 'Shougo/vimshell.git'
 Bundle 'vim-scripts/sudo.vim.git'
 
 Bundle 'scrooloose/nerdtree.git'
@@ -52,6 +52,12 @@ Bundle 'nvie/vim-flake8'
 Bundle 'davidhalter/jedi-vim'
 Bundle 'sontek/rope-vim'
 
+" git
+Bundle 'tpope/vim-fugitive'
+Bundle 'gregsexton/gitv'
+
+" file selector
+Bundle 'kien/ctrlp.vim'
 
 filetype plugin indent on
 
@@ -624,7 +630,7 @@ let g:user_zen_settings = {
 " 起動時にインサートモードで開始
 let g:unite_enable_start_insert = 1
 
-nnoremap <silent> <Space>f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+nnoremap <silent> <Space>f :<C-u>Unite -buffer-name=files file file_mru<CR>
 "inoremap <silent> <C-f> <ESC>:<C-u>UniteWithBufferDir -buffer-name=files file<CR>
 nnoremap <silent> <Space>b :<C-u>Unite buffer file_mru<CR>
 "inoremap <silent> <C-b> <ESC>:<C-u>Unite buffer file_mru<CR>
@@ -738,6 +744,12 @@ elseif has('win64')
   let g:vimproc_dll_path = $HOME . '/.vim/bundle/vimproc/autoload/vimproc_win64.dll'
 endif
 
+"
+" vimshell
+"
+let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
+let g:vimshell_prompt =  '% '
+
 
 "
 " pydoc
@@ -783,4 +795,5 @@ let g:jedi#show_function_definition = 1         " default is 1
 "let g:jedi#function_definition_escape = "'≡'"   " default is '≡'
 "let g:jedi#auto_close_doc = 1                   " default is 1
 autocmd FileType python let b:did_ftplugin = 1
+
 
