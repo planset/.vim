@@ -1,65 +1,74 @@
 "
-" vundle
+" neobundle.vim
 "
 set nocompatible
-filetype off
 
-set rtp+=~/.vim/vundle.git/
-call vundle#rc()
+if has('vim_starting')
+  set rtp+=~/.vim/bundle/neobundle.vim/
+endif
+call neobundle#rc(expand('~/.vim/bundle/'))
+
+NeoBundleFetch 'Shougo/neobundle.vim'
 
 " original repos on github
-Bundle 'Shougo/vimproc.git'
-Bundle 'Shougo/vimshell.git'
-Bundle 'vim-scripts/sudo.vim.git'
+NeoBundle 'Shougo/vimproc.git', { 'build' : {
+    \     'mac' : 'make -f make_mac.mak',
+    \     'unix' : 'make -f make_unix.mak',
+    \     },
+    \  }
+NeoBundle 'Shougo/vimshell.git'
+"NeoBundle 'vim-scripts/sudo.vim.git'
 
-Bundle 'scrooloose/nerdtree.git'
-Bundle 'fuenor/qfixgrep.git'
-"Bundle 'vim-scripts/taglist.vim'
-Bundle 'tpope/vim-surround'
-Bundle 'tyru/open-browser.vim.git'
-Bundle 'altercation/vim-colors-solarized.git'
+NeoBundle 'scrooloose/nerdtree.git'
+NeoBundle 'fuenor/qfixgrep.git'
+"NeoBundle 'vim-scripts/taglist.vim'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tyru/open-browser.vim.git'
+"NeoBundle 'altercation/vim-colors-solarized.git'
 
 " unite
-Bundle 'Shougo/unite.vim.git'
-Bundle 'h1mesuke/unite-outline.git'
-Bundle 'ujihisa/unite-colorscheme.git'
-Bundle 'hakobe/unite-script.git'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'h1mesuke/unite-outline.git'
+NeoBundle 'ujihisa/unite-colorscheme.git'
+NeoBundle 'hakobe/unite-script.git'
 
 " neocomple
-Bundle 'Shougo/neocomplcache.git'
-Bundle 'Shougo/neosnippet'
-Bundle 'vim-scripts/pythoncomplete.git'
-"Bundle 'msanders/snipmate.vim'
+NeoBundle 'Shougo/neocomplcache.git'
+NeoBundle 'Shougo/neosnippet'
+"NeoBundle 'vim-scripts/pythoncomplete.git'
+"NeoBundle 'msanders/snipmate.vim'
 
 " html/javascript/css/scss
-Bundle 'mattn/zencoding-vim.git'
-Bundle 'digitaltoad/vim-jade.git'
-Bundle 'hail2u/vim-css3-syntax.git'
-Bundle 'cakebaker/scss-syntax.vim'
-Bundle 'leafgarland/typescript-vim'
+NeoBundle 'mattn/zencoding-vim.git'
+NeoBundle 'digitaltoad/vim-jade.git'
+NeoBundle 'hail2u/vim-css3-syntax.git'
+NeoBundle 'cakebaker/scss-syntax.vim'
+NeoBundle 'leafgarland/typescript-vim'
 
-"Bundle 'vim-scripts/TwitVim.git'
+"NeoBundle 'vim-scripts/TwitVim.git'
 
 " python
-"Bundle 'thinca/vim-ref.git'
-"Bundle 'fs111/pydoc.vim'
-Bundle 'vim-scripts/python_fold.git'
-Bundle 'reinh/vim-makegreen'
-Bundle 'lambdalisue/nose.vim'
-Bundle 'lambdalisue/vim-django-support'
-Bundle 'mitechie/pyflakes-pathogen'
-Bundle 'nvie/vim-flake8'
-Bundle 'davidhalter/jedi-vim'
-Bundle 'sontek/rope-vim'
+"NeoBundle 'thinca/vim-ref.git'
+"NeoBundle 'fs111/pydoc.vim'
+NeoBundle 'vim-scripts/python_fold.git'
+NeoBundle 'reinh/vim-makegreen'
+NeoBundle 'lambdalisue/nose.vim'
+NeoBundle 'lambdalisue/vim-django-support'
+NeoBundle 'mitechie/pyflakes-pathogen'
+NeoBundle 'nvie/vim-flake8'
+NeoBundle 'davidhalter/jedi-vim'
+NeoBundle 'sontek/rope-vim'
 
 " git
-Bundle 'tpope/vim-fugitive'
-Bundle 'gregsexton/gitv'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'gregsexton/gitv'
 
 " file selector
-Bundle 'kien/ctrlp.vim'
+NeoBundle 'kien/ctrlp.vim'
 
 filetype plugin indent on
+
+NeoBundleCheck
 
 
 " =======================================================================
@@ -71,7 +80,7 @@ filetype plugin indent on
 "" python path 
 "let $PYTHON_DLL = "/opt/python2.7/lib/libpython2.7.dylib"
 
-" leader 
+" Leader 
 let mapleader = "\\"
 
 " ウインドウの幅
@@ -795,5 +804,4 @@ let g:jedi#show_function_definition = 1         " default is 1
 "let g:jedi#function_definition_escape = "'≡'"   " default is '≡'
 "let g:jedi#auto_close_doc = 1                   " default is 1
 autocmd FileType python let b:did_ftplugin = 1
-
 
