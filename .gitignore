@@ -1,6 +1,7 @@
 backup/*
 swap/*
 bundle/*
+!bundle/neobundle.vim
 
 !backup/empty
 !swap/empty
