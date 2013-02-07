@@ -503,6 +503,29 @@ nnoremap <silent> gbv :call <SID>do_custom_gf('V')<CR>
 nnoremap <silent> gbt :call <SID>do_custom_gf('T')<CR>
 
 
+" Surround.vimを拡張して"`を入力しないでも利用できるようにする
+" 今日もどっこい生きている: surround.vimの拡張
+" http://blog.ayakix.com/2012/05/surroundvim.html
+nnoremap ci :call <sid>ExSurround("ci")<cr>
+nnoremap di :call <sid>ExSurround("di")<cr>
+function! s:ExSurround(cmd)
+  let pattern = "'\"{[("
+  let front = strpart(getline("."), 0, col("."))
+  let max = -1
+  for pat in split(pattern, '.\zs')
+    let pos = strridx(front, pat)
+    if pos > max
+      let max = pos
+    endif
+  endfor
+  if max >= 0
+    let sorround = strpart(front, max, 1)
+    call feedkeys(a:cmd . sorround, 'n')
+  endif
+endfunction</cr></sid></cr></sid>
+
+
+
 
 "
 " <Space>p : execute 
@@ -804,4 +827,7 @@ let g:jedi#show_function_definition = 1         " default is 1
 "let g:jedi#function_definition_escape = "'≡'"   " default is '≡'
 "let g:jedi#auto_close_doc = 1                   " default is 1
 autocmd FileType python let b:did_ftplugin = 1
+
+
+
 
