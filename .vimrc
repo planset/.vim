@@ -19,18 +19,20 @@ NeoBundle 'Shougo/vimproc.git', { 'build' : {
 NeoBundle 'Shougo/vimshell.git'
 "NeoBundle 'vim-scripts/sudo.vim.git'
 
-NeoBundle 'scrooloose/nerdtree.git'
-NeoBundle 'fuenor/qfixgrep.git'
-"NeoBundle 'vim-scripts/taglist.vim'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'tyru/open-browser.vim.git'
-"NeoBundle 'altercation/vim-colors-solarized.git'
-
 " unite
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'h1mesuke/unite-outline.git'
 NeoBundle 'ujihisa/unite-colorscheme.git'
 NeoBundle 'hakobe/unite-script.git'
+NeoBundle 'Shougo/vimfiler'
+
+NeoBundle 'scrooloose/nerdtree.git'
+NeoBundle 'fuenor/qfixgrep.git'
+NeoBundle 'thinca/vim-qfreplace'
+"NeoBundle 'vim-scripts/taglist.vim'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tyru/open-browser.vim.git'
+"NeoBundle 'altercation/vim-colors-solarized.git'
 
 " neocomple
 NeoBundle 'Shougo/neocomplcache.git'
