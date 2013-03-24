@@ -33,6 +33,7 @@ NeoBundle 'thinca/vim-qfreplace'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'tyru/open-browser.vim.git'
 "NeoBundle 'altercation/vim-colors-solarized.git'
+NeoBundle 'ack.vim'
 
 " neocomple
 NeoBundle 'Shougo/neocomplcache.git'
