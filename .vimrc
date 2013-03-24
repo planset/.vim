@@ -33,6 +33,7 @@ NeoBundle 'thinca/vim-qfreplace'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'tyru/open-browser.vim.git'
 "NeoBundle 'altercation/vim-colors-solarized.git'
+NeoBundle 'ack.vim'
 
 " neocomple
 NeoBundle 'Shougo/neocomplcache.git'
@@ -830,6 +831,22 @@ let g:jedi#show_function_definition = 1         " default is 1
 "let g:jedi#auto_close_doc = 1                   " default is 1
 autocmd FileType python let b:did_ftplugin = 1
 
+
+
+"
+" for Dash
+"
+function! s:dash(...)
+  let ft = &filetype
+  if &filetype == 'python'
+    let ft = ft.'2'
+  endif
+  let ft = ft.':'
+  let word = len(a:000) == 0 ? input('Dash search: ', ft.expand('<cword>')) : ft.join(a:000, ' ')
+  call system(printf("open dash://'%s'", word))
+endfunction
+command! -nargs=* Dash call <SID>dash(<f-args>)
+nnoremap <silent> <space>d :Dash<cr>
 
 
 

@@ -8,4 +8,5 @@ setl indentkeys+=0#
 
 compiler nose
 
+let pyflakes_use_quickfix = 0
 
