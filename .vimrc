@@ -19,18 +19,20 @@ NeoBundle 'Shougo/vimproc.git', { 'build' : {
 NeoBundle 'Shougo/vimshell.git'
 "NeoBundle 'vim-scripts/sudo.vim.git'
 
-NeoBundle 'scrooloose/nerdtree.git'
-NeoBundle 'fuenor/qfixgrep.git'
-"NeoBundle 'vim-scripts/taglist.vim'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'tyru/open-browser.vim.git'
-"NeoBundle 'altercation/vim-colors-solarized.git'
-
 " unite
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'h1mesuke/unite-outline.git'
 NeoBundle 'ujihisa/unite-colorscheme.git'
 NeoBundle 'hakobe/unite-script.git'
+NeoBundle 'Shougo/vimfiler'
+
+NeoBundle 'scrooloose/nerdtree.git'
+NeoBundle 'fuenor/qfixgrep.git'
+NeoBundle 'thinca/vim-qfreplace'
+"NeoBundle 'vim-scripts/taglist.vim'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tyru/open-browser.vim.git'
+"NeoBundle 'altercation/vim-colors-solarized.git'
 
 " neocomple
 NeoBundle 'Shougo/neocomplcache.git'
@@ -501,6 +503,29 @@ nnoremap <silent> gbe :call <SID>do_custom_gf('E')<CR>
 nnoremap <silent> gbs :call <SID>do_custom_gf('S')<CR>
 nnoremap <silent> gbv :call <SID>do_custom_gf('V')<CR>
 nnoremap <silent> gbt :call <SID>do_custom_gf('T')<CR>
+
+
+" Surround.vimを拡張して"`を入力しないでも利用できるようにする
+" 今日もどっこい生きている: surround.vimの拡張
+" http://blog.ayakix.com/2012/05/surroundvim.html
+nnoremap ci :call <sid>ExSurround("ci")<cr>
+nnoremap di :call <sid>ExSurround("di")<cr>
+function! s:ExSurround(cmd)
+  let pattern = "'\"{[("
+  let front = strpart(getline("."), 0, col("."))
+  let max = -1
+  for pat in split(pattern, '.\zs')
+    let pos = strridx(front, pat)
+    if pos > max
+      let max = pos
+    endif
+  endfor
+  if max >= 0
+    let sorround = strpart(front, max, 1)
+    call feedkeys(a:cmd . sorround, 'n')
+  endif
+endfunction</cr></sid></cr></sid>
+
 
 
 
