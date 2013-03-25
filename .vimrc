@@ -66,6 +66,8 @@ NeoBundle 'gregsexton/gitv'
 " file selector
 NeoBundle 'kien/ctrlp.vim'
 
+NeoBundle 'vim-perl/vim-perl'
+
 filetype plugin indent on
 
 NeoBundleCheck
@@ -827,6 +829,27 @@ let g:jedi#show_function_definition = 1         " default is 1
 "let g:jedi#function_definition_escape = "'≡'"   " default is '≡'
 "let g:jedi#auto_close_doc = 1                   " default is 1
 autocmd FileType python let b:did_ftplugin = 1
+
+
+
+
+function! PerlBetaBetaToTmpl()
+	%s/¥t*print¥s¥="//g
+	%s/.n";//g
+	%s/¥"/"/g
+	set fileencoding=sjis
+	:w
+endfunction
+
+nmap <silent> ¥C :call PerlBetaBetaToTmpl()<cr>
+
+function! QUERY_2_SELF_QUERY()
+	%s/¥$QUERY{'¥([^']*¥)'}/$self->{QUERY}->{¥1}/g
+endfunction
+
+nmap <silent> ¥D :call QUERY_2_SELF_QUERY()<cr>
+
+
 
 
 
