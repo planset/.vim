@@ -559,6 +559,20 @@ function! s:SphinxBuild()
 command! SphinxBuild call <SID>SphinxBuild()
 nnoremap <silent> <Space>sb :call <SID>SphinxBuild()<CR>
 
+"
+" Execute cursor line
+"
+function! s:ExecLine()
+  exe "VimProcBang " . getline('.') 
+endfunction
+command! -nargs=* ExecLine :call <SID>ExecLine()
+nnoremap <silent> <Space>lp :ExecLine<CR>
+
+function! s:ExecLineRead()
+  exe "VimProcRead " . getline('.') 
+endfunction
+command! -nargs=* ExecLineRead :call <SID>ExecLineRead()
+nnoremap <silent> <Space>lr :ExecLineRead<CR>
 
 
 
