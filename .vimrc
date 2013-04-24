@@ -62,6 +62,12 @@ NeoBundle 'nvie/vim-flake8'
 NeoBundle 'davidhalter/jedi-vim'
 NeoBundle 'sontek/rope-vim'
 
+" ruby
+NeoBundle 'vim-ruby/vim-ruby', {
+            \ 'autoload' : {
+            \     'filetypes' : ['ruby']
+            \ }}
+
 " git
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'gregsexton/gitv'
