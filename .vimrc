@@ -48,7 +48,7 @@ NeoBundle 'hail2u/vim-css3-syntax.git'
 NeoBundle 'cakebaker/scss-syntax.vim'
 NeoBundle 'leafgarland/typescript-vim'
 
-"NeoBundle 'vim-scripts/TwitVim.git'
+NeoBundle 'vim-scripts/TwitVim.git'
 
 " python
 "NeoBundle 'thinca/vim-ref.git'
@@ -71,9 +71,13 @@ NeoBundle 'vim-ruby/vim-ruby', {
 " git
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'gregsexton/gitv'
+"NeoBundle 'airblade/vim-gitgutter'
 
 " file selector
 NeoBundle 'kien/ctrlp.vim'
+
+" browse
+NeoBundle 'yuratomo/w3m.vim'
 
 filetype plugin indent on
 
@@ -102,6 +106,8 @@ let mapleader = "\\"
 "colorscheme zenburn
 colorscheme desertEx
 
+"
+set colorcolumn=80
 "新しい行のインデントを現在行と同じにする
 "set autoindent
 "新しい行を作ったときに高度な自動インデントを行う
@@ -126,7 +132,11 @@ set noswapfile
 "ファイル保存ダイアログの初期ディレクトリをバッファファイル位置に設定
 set browsedir=buffer
 "クリップボードをWindowsと連携
-set clipboard=unnamed
+if $TMUX == ''
+  set clipboard+=unnamed
+else
+  "set clipboard=unnamed
+endif
 "Vi互換をオフ
 set nocompatible
 "変更中のファイルでも、保存しないで他のファイルを表示
@@ -534,8 +544,6 @@ function! s:ExSurround(cmd)
 endfunction</cr></sid></cr></sid>
 
 
-
-
 "
 " <Space>p : execute 
 "
@@ -603,6 +611,12 @@ augroup END
 " plugin settings
 "
 " =======================================================================
+
+"
+" MakeGreen
+"
+nnoremap <silent> <Leader>t  :MakeGreen<CR>
+
 
 "
 " neocomplcache
@@ -735,21 +749,22 @@ endif
 nnoremap <silent> <Space>o :<C-u>Unite outline<CR>
 
 
-""
-"" twitvim
-"" 
-"let twitvim_count = 40
-"nnoremap ,tp :<C-u>PosttoTwitter<CR>
-"nnoremap ,tf :<C-u>FriendsTwitter<CR><C-w>j
-"nnoremap ,tu :<C-u>UserTwitter<CR><C-w>j
-"nnoremap ,tr :<C-u>RepliesTwitter<CR><C-w>j
-"nnoremap ,tn :<C-u>NextTwitter<CR>
-"nnoremap ,tl :<C-u>ListTwitter<space> 
 "
-"autocmd FileType twitvim call s:twitvim_my_settings()
-"function! s:twitvim_my_settings()
-"  set nowrap
-"endfunction
+" twitvim
+" 
+let twitvim_enable_python = 1
+let twitvim_count = 20
+nnoremap ,tp :<C-u>PosttoTwitter<CR>
+nnoremap ,tf :<C-u>FriendsTwitter<CR><C-w>j
+nnoremap ,tu :<C-u>UserTwitter<CR><C-w>j
+nnoremap ,tr :<C-u>RepliesTwitter<CR><C-w>j
+nnoremap ,tn :<C-u>NextTwitter<CR>
+nnoremap ,tl :<C-u>ListTwitter<space> 
+
+autocmd FileType twitvim call s:twitvim_my_settings()
+function! s:twitvim_my_settings()
+  "set nowrap
+endfunction
 
 
 "
@@ -867,6 +882,5 @@ function! s:dash(...)
 endfunction
 command! -nargs=* Dash call <SID>dash(<f-args>)
 nnoremap <silent> <space>d :Dash<cr>
-
 
 
