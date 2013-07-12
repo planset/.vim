@@ -46,6 +46,7 @@ NeoBundle 'mattn/zencoding-vim.git'
 NeoBundle 'digitaltoad/vim-jade.git'
 NeoBundle 'hail2u/vim-css3-syntax.git'
 NeoBundle 'cakebaker/scss-syntax.vim'
+NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'leafgarland/typescript-vim'
 
 NeoBundle 'vim-scripts/TwitVim.git'
@@ -883,4 +884,22 @@ endfunction
 command! -nargs=* Dash call <SID>dash(<f-args>)
 nnoremap <silent> <space>d :Dash<cr>
 
+
+"
+" input support
+"
+inoremap <expr> ,df strftime('%Y-%m-%d %H:%M:%S')
+inoremap <expr> ,dd strftime('%Y-%m-%d')
+inoremap <expr> ,dt strftime('%H:%M:%S')
+
+nnoremap gc `[v`]
+vnoremap gc :<C-u>normal gc<Enter>
+onoremap gc :<C-u>normal gc<Enter>
+
+command! Cp932 edit ++enc=cp932
+command! Eucjp edit ++enc=euc-jp
+command! Iso2022jp edit ++enc=iso-2022-jp
+command! Utf8 edit ++enc=utf-8
+command! Jis Iso2022jp
+command! Sjis Cp932
 
