@@ -549,7 +549,11 @@ endfunction</cr></sid></cr></sid>
 " <Space>p : execute 
 "
 function! s:Exec()
-  exe "VimProcBang " . &ft . " %" 
+  if &ft == 'javascript'
+    exe "VimProcBang node " . " %"
+  else
+    exe "VimProcBang " . &ft . " %" 
+  endif
 :endfunction
 command! Exec call <SID>Exec()
 map <silent> <Space>p :call <SID>Exec()<CR>
@@ -868,6 +872,51 @@ let g:jedi#show_function_definition = 1         " default is 1
 autocmd FileType python let b:did_ftplugin = 1
 
 
+"
+" for w3m
+"
+
+" 
+" GetKeyword 
+" カーソル化の文字列をベースに入力エリアを表示してキーワードを確定する。
+" 取得した文字列を使って検索したりしましょ
+"
+function! s:GetKeyword()
+  let ft = &filetype
+  if &filetype == 'python'
+    let ft = ft.'2'
+  endif
+  let ft = ft.' '
+  let word = len(a:000) == 0 ? input('Keywords: ', ft.expand('<cword>')) : ft.join(a:000, ' ')
+  return word
+endfunction
+function! s:ReplaceSpaceToPlus(word)
+  return substitute(a:word, ' ', '+', 'g')
+endfunction
+nnoremap <silent> gs :call <SID>ReplaceSpaceToPlus()<CR>
+
+"
+" ぐぐる
+"
+function! s:SearchGoogleVSplit()
+  let keyword = s:GetKeyword()
+  if keyword == ""
+    return
+  endif
+  keyword = s:ReplaceSpaceToPlus(keyword)
+  exe 'W3mVSplit http://google.co.jp/search?q=' . keyword
+:endfunction
+function! s:SearchGoogleTab()
+  let keyword = s:GetKeyword()
+  if keyword == ""
+    return
+  endif
+  keyword = s:ReplaceSpaceToPlus(keyword)
+  exe 'W3mTab http://google.co.jp/search?q=' . keyword
+:endfunction
+nnoremap <silent> gr :call <SID>SearchGoogleVSplit()<CR>
+nnoremap <silent> gR :call <SID>SearchGoogleTab()<CR>
+
 
 "
 " for Dash
@@ -892,6 +941,8 @@ inoremap <expr> ,df strftime('%Y-%m-%d %H:%M:%S')
 inoremap <expr> ,dd strftime('%Y-%m-%d')
 inoremap <expr> ,dt strftime('%H:%M:%S')
 
+" １つ前にペーストした内容を選択する。
+" codeを複数行dd, pしたあと、インデントを変えるときにちょー便利
 nnoremap gc `[v`]
 vnoremap gc :<C-u>normal gc<Enter>
 onoremap gc :<C-u>normal gc<Enter>
