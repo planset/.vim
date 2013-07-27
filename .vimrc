@@ -669,6 +669,7 @@ autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
+autocmd BufNewFile *.py 0r $HOME/.vim/template/template.python
 
 " neosnippets
 let g:neosnippet#snippets_directory = '~/.vim/snippets'
