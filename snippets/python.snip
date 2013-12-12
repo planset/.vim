@@ -233,3 +233,19 @@ prev_word   '^'
 	if __name__ == '__main__':
 	    manager.run()
 
+snippet   pytest
+abbr      import pytest...
+prev_word '^'
+	#!/usr/bin/env python
+	# -*- coding: utf-8 -*-
+
+	import pytest
+	${1:from app import target_module}
+
+	class Test${2:TargetClassName}(object):
+		def test_method(self):
+			${3:pass}
+			assert 1 == 1
+
+	if __name__ == '__main__':
+		pytest.main()

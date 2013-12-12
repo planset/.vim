@@ -1,10 +1,12 @@
+" vimrc
+
 augroup MyAutoCmd
   autocmd!
 augroup END
 
-"
+" =============
 " neobundle.vim
-"
+" =============
 let s:noplugin = 0
 let s:bundle_root = expand('~/.vim/bundle')
 let s:neobundle_root = s:bundle_root . '/neobundle.vim'
@@ -66,34 +68,36 @@ else
     nnoremap <silent> [unite]m :<C-u>Unite file_mru<CR>
     nnoremap <silent> [unite]c :<C-u>Unite bookmark<CR>
     nnoremap <silent> [unite]o :<C-u>Unite outline<CR>
-    nnoremap <silent> <Space>o :<C-u>Unite outline<CR>
     nnoremap <silent> [unite]t :<C-u>Unite tab<CR>
     nnoremap <silent> [unite]w :<C-u>Unite window<CR>
     let s:hooks = neobundle#get_hooks("unite.vim")
     function! s:hooks.on_source(bundle)
-    " start unite in insert mode
-    let g:unite_enable_start_insert = 1
-    " use vimfiler to open directory
-    call unite#custom_default_action("source/bookmark/directory", "vimfiler")
-    call unite#custom_default_action("directory", "vimfiler")
-    call unite#custom_default_action("directory_mru", "vimfiler")
-    autocmd MyAutoCmd FileType unite call s:unite_settings()
-    function! s:unite_settings()
-        imap <buffer> <Esc><Esc> <Plug>(unite_exit)
-        nmap <buffer> <Esc> <Plug>(unite_exit)
-        nmap <buffer> <C-n> <Plug>(unite_select_next_line)
-        nmap <buffer> <C-p> <Plug>(unite_select_previous_line)
-    endfunction
+        " start unite in insert mode
+        let g:unite_enable_start_insert = 1
+        " use vimfiler to open directory
+        call unite#custom_default_action("source/bookmark/directory", "vimfiler")
+        call unite#custom_default_action("directory", "vimfiler")
+        call unite#custom_default_action("directory_mru", "vimfiler")
+        autocmd MyAutoCmd FileType unite call s:unite_settings()
+        function! s:unite_settings()
+            imap <buffer> <Esc><Esc> <Plug>(unite_exit)
+            nmap <buffer> <Esc> <Plug>(unite_exit)
+            nmap <buffer> <C-n> <Plug>(unite_select_next_line)
+            nmap <buffer> <C-p> <Plug>(unite_select_previous_line)
+            " 単語単位からパス単位で削除するように変更
+            imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
+            " 
+            imap <silent><buffer> <C-t> <Tab>tabopen<CR>
+            imap <silent> <C-t> unite#do_action('tabopen')
+        endfunction
     endfunction
 
     NeoBundle 'ujihisa/unite-colorscheme.git'
     if globpath(&rtp, 'plugin/unite.vim') != ''
-    nnoremap sc :<C-u>Unite colorscheme <Cr>
+    nnoremap [unite]sc :<C-u>Unite colorscheme <Cr>
     endif
 
     NeoBundle 'hakobe/unite-script.git'
-
-    "
 
 
     " ========
@@ -114,9 +118,8 @@ else
         let g:vimfiler_as_default_explorer = 1
         let g:vimfiler_enable_auto_cd = 1
         
-        " .から始まるファイルおよび.pycで終わるファイルを不可視パターンに
-        " 2013-08-14 追記
-        let g:vimfiler_ignore_pattern = "\%(^\..*\|\.pyc$\)"
+        "let g:vimfiler_ignore_pattern = "\%(^\..*\|\.pyc$\)"
+        let g:vimfiler_ignore_pattern = "\%(^\.pyc$\)"
 
         " vimfiler specific key mappings
         autocmd MyAutoCmd FileType vimfiler call s:vimfiler_settings()
@@ -130,15 +133,15 @@ else
         endfunction
     endfunction
 
-    " =======
+    " ===
     " Git
-    " =======
+    " ===
     NeoBundleLazy "mattn/gist-vim", {
         \ "depends": ["mattn/webapi-vim"],
         \ "autoload": {
         \   "commands": ["Gist"],
         \ }}
-    NeoBundle "tpope/vim-fugitive" " 遅延ロードだめぽ
+    NeoBundle "tpope/vim-fugitive" " 遅延ロードができないらしい
     NeoBundleLazy "gregsexton/gitv", {
         \ "depends": ["tpope/vim-fugitive"],
         \ "autoload": {
@@ -151,22 +154,28 @@ else
     NeoBundle 'kien/ctrlp.vim'
     NeoBundle 'fuenor/qfixgrep.git'
     NeoBundle 'thinca/vim-qfreplace'
+
     NeoBundle 'tpope/vim-surround'
+    " gettext 'foo' を _('foo') に、 "foo" を _("foo") 
+    let g:surround_103 = "_('\r')"  " 103 = g
+    let g:surround_71 = "_(\"\r\")" " 71 = G
+    nmap g' cs'g
+    nmap g" cs"G
+
     NeoBundle 'vim-scripts/Align'
     NeoBundle 'vim-scripts/YankRing.vim'
     NeoBundle 'ack.vim'
 
-    " =================
+    " ===========
     " neocomplete
-    " =================
-    if has('lua') && v:version >= 703 && has('patch885')
+    " ===========
+    if has('lua') && v:version >= 703 "&& has('patch885')
         NeoBundleLazy "Shougo/neocomplete.vim", {
             \ "autoload": {
             \   "insert": 1,
             \ }}
-        " 2013-07-03 14:30 NeoComplCacheに合わせた
-        let g:neocomplete#enable_at_startup = 1
         let s:hooks = neobundle#get_hooks("neocomplete.vim")
+        let g:neocomplcache_enable_at_startup = 1
         function! s:hooks.on_source(bundle)
             let g:acp_enableAtStartup = 0
             let g:neocomplet#enable_smart_case = 1
@@ -178,7 +187,6 @@ else
             \ "autoload": {
             \   "insert": 1,
             \ }}
-        " 2013-07-03 14:30 原因不明だがNeoComplCacheEnableコマンドが見つからないので変更
         let g:neocomplcache_enable_at_startup = 1
         let s:hooks = neobundle#get_hooks("neocomplcache.vim")
         function! s:hooks.on_source(bundle)
@@ -186,7 +194,6 @@ else
             let g:neocomplcache_enable_smart_case = 1
             " NeoComplCacheを有効化
             " NeoComplCacheEnable 
-
         endfunction
         "
         " Plugin key-mappings.
@@ -247,9 +254,9 @@ else
     endfunction
 
 
-    " ==============================
+    " ========================
     " html/javascript/css/scss
-    " ==============================
+    " ========================
     NeoBundleLazy 'mattn/emmet-vim.git', {
         \ "autoload": {
         \   "filetypes": ["html", "djangohtml"]
@@ -271,12 +278,10 @@ else
         \ "autoload": {
         \   "filetypes": ["jade", "html", "djangohtml"]
         \ }}
-
     NeoBundleLazy 'hail2u/vim-css3-syntax.git', {
         \ "autoload": {
         \   "filetypes": ["css", "css", "html", "djangohtml"]
         \ }}
-
     NeoBundleLazy 'cakebaker/scss-syntax.vim', {
         \ "autoload": {
         \   "filetypes": ["scss"]
@@ -290,10 +295,9 @@ else
         \   "filetypes": ["typescript"]
         \ }}
 
-
-    " ==============================
+    " ======
     " python
-    " ==============================
+    " ======
     " Djangoを正しくVimで読み込めるようにする
     NeoBundleLazy "lambdalisue/vim-django-support", {
         \ "autoload": {
@@ -317,31 +321,51 @@ else
         " jediにvimの設定を任せると'completeopt+=preview'するので
         " 自動設定機能をOFFにし手動で設定を行う
         let g:jedi#auto_vim_configuration = 0
-        " 補完の最初の項目が選択された状態だと使いにくいためオフにする
         let g:jedi#popup_select_first = 0
+        set completeopt=menuone
 
-        let g:jedi#auto_initialization = 1              " default is 1
-        let g:jedi#goto_assignments_command = "<C-d>"               " default is
-        let g:jedi#goto_definitions_command = "<leader>d" " default is <leader>d
-        let g:jedi#documentation_command = "K"                          " default is K
-        let g:jedi#use_tabs_not_buffers = 0             " default is 1
-        let g:jedi#popup_on_dot = 0                     " default is 1
-        let g:jedi#rename_command = "<leader>r"         " default is <leader>r
-        let g:jedi#usages_command = "<leader>n"  " default is <leader>n
-        let g:jedi#show_call_signatures = 1             " default is 1
-        "let g:jedi#function_definition_escape = "'≡'"   " default is '≡'
-        "let g:jedi#auto_close_doc = 1                   " default is 1
+        let g:jedi#completions_command = "<C-n>"     " default is <leader>g
+        "let g:jedi#auto_initialization = 1                " default is 1
+        let g:jedi#goto_assignments_command = "<C-g>"     " default is <leader>g
+        let g:jedi#goto_definitions_command = "<C-d>" " default is <leader>d
+        "let g:jedi#documentation_command = "K"            " default is K
+        "let g:jedi#use_tabs_not_buffers = 0               " default is 1
+        let g:jedi#popup_on_dot = 0                       " default is 1
+        "let g:jedi#rename_command = "<leader>r"           " default is <leader>r
+        "let g:jedi#usages_command = "<leader>n"           " default is <leader>n
+        "let g:jedi#show_call_signatures = 1               " default is 1
+        "let g:jedi#function_definition_escape = "'≡'"     " default is '≡'
+        "let g:jedi#auto_close_doc = 1                     " default is 1
         autocmd FileType python let b:did_ftplugin = 1
     endfunction
 
-    NeoBundle 'vim-scripts/python_fold.git'
-    NeoBundle 'lambdalisue/nose.vim'
-    NeoBundle 'mitechie/pyflakes-pathogen'
-    NeoBundle 'nvie/vim-flake8'
+    NeoBundleLazy 'vim-scripts/python_fold.git', {
+        \ "autoload": {
+        \   "filetypes": ["python", "python3", "djangohtml"]
+        \ }}
+    NeoBundleLazy 'nvie/vim-flake8', {
+        \ "autoload": {
+        \   "filetypes": ["python", "python3"]
+        \ }}
+    NeoBundleLazy 'alfredodeza/pytest.vim', {
+        \ "autoload": {
+        \   "filetypes": ["python", "python3"]
+        \ }}
+    let s:hooks = neobundle#get_hooks("pytest.vim")
+    function! s:hooks.on_source(bundle)
+        " ファイル全体に py.test を実行
+        nmap <silent><Leader>tf <Esc>:Pytest file<CR>
+        " フォーカスのあたってるクラスに py.test を実行
+        nmap <silent><Leader>tc <Esc>:Pytest class<CR>
+        " フォーカスのあたってるメソッドに py.test を実行
+        nmap <silent><Leader>tm <Esc>:Pytest method<CR>
+        " エラーメッセージなどのログウィンドウ表示をトグル
+        nmap <silent><Leader>ts <Esc>:Pytest session<CR>
+    endfunction
 
-    " ======
+    " ====
     " ruby
-    " ======
+    " ====
     NeoBundleLazy 'vim-ruby/vim-ruby', {
         \ 'autoload' : {
         \     'filetypes' : ['ruby']
@@ -356,9 +380,9 @@ else
     nmap gx <Plug>(openbrowser-smart-search)
     vmap gx <Plug>(openbrowser-smart-search)
 
-    " ======
+    " ===
     " etc
-    " ======
+    " ===
     NeoBundleLazy 'vim-scripts/TwitVim.git', {
         \ "autoload": {
         \   "commands": ["PosttoTwitter", "FriendsTwitter", "UserTwitter",
@@ -976,62 +1000,14 @@ augroup END
 "
 " =======================================================================
 
+"autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+"autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+"autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+"autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+"autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
-
-" AutoComplPop like behavior.
-"let g:neocomplcache_enable_auto_select = 1
-
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
+" template
 autocmd BufNewFile *.py 0r $HOME/.vim/template/template.python
-
-
-
-
-"
-" unite.vim
-"
-" 起動時にインサートモードで開始
-let g:unite_enable_start_insert = 1
-
-nnoremap <silent> <Space>f :<C-u>Unite -buffer-name=files file file_mru<CR>
-"inoremap <silent> <C-f> <ESC>:<C-u>UniteWithBufferDir -buffer-name=files file<CR>
-nnoremap <silent> <Space>b :<C-u>Unite buffer file_mru<CR>
-"inoremap <silent> <C-b> <ESC>:<C-u>Unite buffer file_mru<CR>
-nnoremap <silent> <Space>a :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
-
-" バッファ一覧
-nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
-" ファイル一覧
-nnoremap <silent> ,uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
-" レジスタ一覧
-nnoremap <silent> ,ur :<C-u>Unite -buffer-name=register register<CR>
-" 最近使用したファイル一覧
-nnoremap <silent> ,um :<C-u>Unite file_mru<CR>
-" 全部乗せ
-nnoremap <silent> ,ua :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
-" pydoc
-nnoremap <silent> ,up :<C-u>Unite ref/pydoc<CR>
-nnoremap <silent> <Space>up :<C-u>Unite ref/pydoc<CR>
-
-" unite.vim上でのキーマッピング
-autocmd FileType unite call s:unite_my_settings()
-function! s:unite_my_settings()
-  "inoremap <buffer> <C-l> <C-x><C-u><C-p><Down>
-
-  " 単語単位からパス単位で削除するように変更
-  imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
-  " 
-  imap <silent><buffer> <C-t> <Tab>tabopen<CR>
-  imap <silent> <C-t> unite#do_action('tabopen')
-  " ESCキーを2回押すと終了する
-  nmap <silent><buffer> <ESC><ESC> q
-  imap <silent><buffer> <ESC><ESC> <ESC>q
-endfunction
 
 
 
@@ -1048,19 +1024,6 @@ function! s:call_grep_curdirall(args)"{{{
   "call unite#start(l:args, l:options)
 endfunction"}}}
 noremap ,g :<C-u>GrepCurDirAll<space>
-
-
-
-
-"
-" surround.vim
-"
-" gettext 'foo' を _('foo') に、 "foo" を _("foo") 
-let g:surround_103 = "_('\r')"  " 103 = g
-let g:surround_71 = "_(\"\r\")" " 71 = G
-nmap g' cs'g
-nmap g" cs"G
-
 
 
 " 
@@ -1141,3 +1104,12 @@ command! Utf8 edit ++enc=utf-8
 command! Jis Iso2022jp
 command! Sjis Cp932
 
+
+
+" 参考にした資料
+" 
+" `Vimを最強のPython開発環境にする2 - Λlisue's blog
+" <http://lambdalisue.hatenablog.com/entry/2013/06/23/071344>`_
+"
+" 他にも色々。
+"
