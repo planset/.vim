@@ -6,7 +6,7 @@ setl indentkeys+=0#
 "setl textwidth=79
 
 
-compiler nose
+"compiler nose
 
 let pyflakes_use_quickfix = 0
 
