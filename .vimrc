@@ -100,38 +100,38 @@ else
     NeoBundle 'hakobe/unite-script.git'
 
 
-    " ========
-    " vimfiler
-    " ========
-    NeoBundleLazy "Shougo/vimfiler", {
-        \ "depends": ["Shougo/unite.vim"],
-        \ "autoload": {
-        \   "commands": ["VimFilerTab", "VimFiler", "VimFilerExplorer"],
-        \   "mappings": ['<Plug>(vimfiler_switch)'],
-        \   "explorer": 1,
-        \ }}
-    nnoremap <C-e> :VimFilerExplorer<CR>
-    " close vimfiler automatically when there are only vimfiler open
-    autocmd MyAutoCmd BufEnter * if (winnr('$') == 1 && &filetype ==# 'vimfiler') | q | endif
-    let s:hooks = neobundle#get_hooks("vimfiler")
-    function! s:hooks.on_source(bundle)
-        let g:vimfiler_as_default_explorer = 1
-        let g:vimfiler_enable_auto_cd = 1
-        
-        "let g:vimfiler_ignore_pattern = "\%(^\..*\|\.pyc$\)"
-        let g:vimfiler_ignore_pattern = "\%(^\.pyc$\)"
-
-        " vimfiler specific key mappings
-        autocmd MyAutoCmd FileType vimfiler call s:vimfiler_settings()
-        function! s:vimfiler_settings()
-            " ^^ to go up
-            nmap <buffer> ^^ <Plug>(vimfiler_switch_to_parent_directory)
-            " use R to refresh
-            nmap <buffer> R <Plug>(vimfiler_redraw_screen)
-            " overwrite C-l
-            nmap <buffer> <C-l> <C-w>l
-        endfunction
-    endfunction
+"    " ========
+"    " vimfiler
+"    " ========
+"    NeoBundleLazy "Shougo/vimfiler", {
+"        \ "depends": ["Shougo/unite.vim"],
+"        \ "autoload": {
+"        \   "commands": ["VimFilerTab", "VimFiler", "VimFilerExplorer"],
+"        \   "mappings": ['<Plug>(vimfiler_switch)'],
+"        \   "explorer": 1,
+"        \ }}
+"    nnoremap <C-e> :VimFilerExplorer<CR>
+"    " close vimfiler automatically when there are only vimfiler open
+"    autocmd MyAutoCmd BufEnter * if (winnr('$') == 1 && &filetype ==# 'vimfiler') | q | endif
+"    let s:hooks = neobundle#get_hooks("vimfiler")
+"    function! s:hooks.on_source(bundle)
+"        let g:vimfiler_as_default_explorer = 1
+"        let g:vimfiler_enable_auto_cd = 1
+"        
+"        "let g:vimfiler_ignore_pattern = "\%(^\..*\|\.pyc$\)"
+"        let g:vimfiler_ignore_pattern = "\%(^\.pyc$\)"
+"
+"        " vimfiler specific key mappings
+"        autocmd MyAutoCmd FileType vimfiler call s:vimfiler_settings()
+"        function! s:vimfiler_settings()
+"            " ^^ to go up
+"            nmap <buffer> ^^ <Plug>(vimfiler_switch_to_parent_directory)
+"            " use R to refresh
+"            nmap <buffer> R <Plug>(vimfiler_redraw_screen)
+"            " overwrite C-l
+"            nmap <buffer> <C-l> <C-w>l
+"        endfunction
+"    endfunction
 
     " ===
     " Git
@@ -165,6 +165,25 @@ else
     NeoBundle 'vim-scripts/Align'
     NeoBundle 'vim-scripts/YankRing.vim'
     NeoBundle 'ack.vim'
+
+    " ========
+    " NERDTree
+    " ========
+    NeoBundleLazy "scrooloose/nerdtree", {
+        \ "autoload": {
+        \   "commands": ["NERDTree", "NerdTreeToggle"],
+        \ }}
+    let file_name = expand("%:p")
+    if has('vim_starting') &&  file_name == ""
+        autocmd VimEnter * execute 'NERDTree ./'
+    endif
+    " CTRL + e : Toggle NERDTree window
+    nnoremap <c-e> :<c-u>:NERDTreeToggle<cr>
+    let s:hooks = neobundle#get_hooks("nerdtree")
+    function! s:hooks.on_source(bundle)
+        let NERDTreeIgnore = ['\.pyc$', '\.class$']
+    endfunction
+
 
     " ===========
     " neocomplete
@@ -280,7 +299,7 @@ else
         \ }}
     NeoBundleLazy 'hail2u/vim-css3-syntax.git', {
         \ "autoload": {
-        \   "filetypes": ["css", "css", "html", "djangohtml"]
+        \   "filetypes": ["css", "html", "djangohtml"]
         \ }}
     NeoBundleLazy 'cakebaker/scss-syntax.vim', {
         \ "autoload": {
@@ -468,16 +487,13 @@ set nowritebackup
 set noswapfile
 "ファイル保存ダイアログの初期ディレクトリをバッファファイル位置に設定
 set browsedir=buffer
-"if $TMUX == ''
-"    set clipboard+=unnamed
-"else
-"    set clipboard=unnamed
-"endif
-" YankRing
-if has('unnamedplus')
-    set clipboard& clipboard+=unnamedplus,unnamed 
-else
-    set clipboard& clipboard+=unnamed
+if $TMUX == ''
+    " YankRing
+    if has('unnamedplus')
+        set clipboard& clipboard+=unnamedplus,unnamed 
+    else
+        set clipboard& clipboard+=unnamed
+    endif
 endif
 "Vi互換をオフ
 set nocompatible
