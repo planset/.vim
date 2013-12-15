@@ -171,7 +171,7 @@ else
     " ========
     NeoBundleLazy "scrooloose/nerdtree", {
         \ "autoload": {
-        \   "commands": ["NERDTree", "NerdTreeToggle"],
+        \   "commands": ["NERDTree", "NERDTreeToggle"],
         \ }}
     let file_name = expand("%:p")
     if has('vim_starting') &&  file_name == ""
