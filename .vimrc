@@ -194,13 +194,27 @@ else
             \   "insert": 1,
             \ }}
         let s:hooks = neobundle#get_hooks("neocomplete.vim")
-        let g:neocomplcache_enable_at_startup = 1
         function! s:hooks.on_source(bundle)
             let g:acp_enableAtStartup = 0
             let g:neocomplet#enable_smart_case = 1
             " NeoCompleteを有効化
-            " NeoCompleteEnable
+            NeoCompleteEnable
         endfunction
+        "
+        " Plugin key-mappings.
+        inoremap <expr><C-g>     neocomplete#undo_completion()
+        inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+        " Recommended key-mappings.
+        " <CR>: close popup and save indent.
+        inoremap <expr><CR>  neocomplete#smart_close_popup() . "\<CR>"
+        " <TAB>: completion.
+        inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+        " <C-h>, <BS>: close popup and delete backword char.
+        inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+        inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+        inoremap <expr><C-y>  neocomplete#close_popup()
+        "inoremap <expr><C-e>  neocomplete#cancel_popup()
     else
         NeoBundleLazy "Shougo/neocomplcache.vim", {
             \ "autoload": {
