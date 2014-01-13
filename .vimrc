@@ -175,7 +175,7 @@ else
         \ }}
     let file_name = expand("%:p")
     if has('vim_starting') &&  file_name == ""
-        autocmd VimEnter * execute 'NERDTree ./'
+        autocmd MyAutoCmd VimEnter * execute 'NERDTree ./'
     endif
     " CTRL + e : Toggle NERDTree window
     nnoremap <c-e> :<c-u>:NERDTreeToggle<cr>
@@ -288,6 +288,43 @@ else
 
 
     " ========================
+    " operator
+    " ========================
+    NeoBundle "kana/vim-operator-user"
+    NeoBundle "kana/vim-operator-replace"
+    nmap s <Plug>(operator-replace)
+
+    " ========================
+    " textobj
+    " ========================
+    NeoBundle "kana/vim-textobj-user"
+
+    NeoBundle "sgur/vim-textobj-parameter"
+    " hoge(hoge, hoge)-
+    "       ^ vi,   (or va,
+    " hoge(HOGE, hoge) 大文字のところを選択( or ,まで)
+
+    NeoBundle "osyo-manga/vim-textobj-multiblock"
+    omap ab <Plug>(textobj-multiblock-a)
+    omap ib <Plug>(textobj-multiblock-i)
+    xmap ab <Plug>(textobj-multiblock-a)
+    xmap ib <Plug>(textobj-multiblock-i)
+
+
+    NeoBundle "osyo-manga/vim-textobj-multitextobj"
+    let g:textobj_multitextobj_textobjects_i = [
+    \   "\<Plug>(textobj-url-i)",
+    \   "\<Plug>(textobj-multiblock-i)",
+    \   "\<Plug>(textobj-function-i)",
+    \   "\<Plug>(textobj-entire-i)",
+    \]
+    omap amt <Plug>(textobj-multitextobj-a)
+    omap imt <Plug>(textobj-multitextobj-i)
+    vmap amt <Plug>(textobj-multitextobj-a)
+    vmap imt <Plug>(textobj-multitextobj-i)
+
+
+    " ========================
     " html/javascript/css/scss
     " ========================
     NeoBundleLazy 'mattn/emmet-vim.git', {
@@ -369,7 +406,7 @@ else
         "let g:jedi#show_call_signatures = 1               " default is 1
         "let g:jedi#function_definition_escape = "'≡'"     " default is '≡'
         "let g:jedi#auto_close_doc = 1                     " default is 1
-        autocmd FileType python let b:did_ftplugin = 1
+        autocmd MyAutoCmd FileType python let b:did_ftplugin = 1
     endfunction
 
     NeoBundleLazy 'vim-scripts/python_fold.git', {
@@ -388,6 +425,8 @@ else
     function! s:hooks.on_source(bundle)
         " ファイル全体に py.test を実行
         nmap <silent><Leader>tf <Esc>:Pytest file<CR>
+        " プロジェクト全体に py.test を実行
+        nmap <silent><Leader>tp <Esc>:Pytest project<CR>
         " フォーカスのあたってるクラスに py.test を実行
         nmap <silent><Leader>tc <Esc>:Pytest class<CR>
         " フォーカスのあたってるメソッドに py.test を実行
@@ -416,6 +455,15 @@ else
     " ===
     " etc
     " ===
+    NeoBundleLazy 'itchyny/calendar.vim', {
+        \ "autoload": {
+        \   "commands": ["Calendar"],
+        \ }}
+    let s:hooks = neobundle#get_hooks("calendar.vim")
+    function! s:hooks.on_source(bundle)
+        let g:calendar_google_calendar = 1
+        let g:calendar_google_task = 1
+    endfunction
     NeoBundleLazy 'vim-scripts/TwitVim.git', {
         \ "autoload": {
         \   "commands": ["PosttoTwitter", "FriendsTwitter", "UserTwitter",
@@ -432,7 +480,7 @@ else
         let twitvim_enable_python = 1
         let twitvim_count = 20
 
-        autocmd FileType twitvim call s:twitvim_my_settings()
+        autocmd MyAutoCmd FileType twitvim call s:twitvim_my_settings()
         function! s:twitvim_my_settings()
             "set nowrap
         endfunction
@@ -469,8 +517,8 @@ let mapleader = "\\"
 "colorscheme zenburn
 colorscheme desertEx
 
-"
-set colorcolumn=80
+"指定した文字数の背景色を強調する。
+"set colorcolumn=80
 "新しい行のインデントを現在行と同じにする
 "set autoindent
 "新しい行を作ったときに高度な自動インデントを行う
@@ -586,7 +634,9 @@ if has('multi_byte_ime') || has('xim') || has('gui_macvim')
   " 挿入モードでのIME状態を記憶させない場合、次行のコメントを解除
   inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
   set noimdisable
-  set imdisableactivate
+  if has('kaoriya')
+    set imdisableactivate
+  endif
 endif
 
 "---------------------------------------------------------------------------
@@ -1013,7 +1063,7 @@ nnoremap <silent> <Space>lr :ExecLineRead<CR>
 "
 augroup vimrc-auto-mkdir
     autocmd!
-    autocmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
+    autocmd MyAutoCmd BufWritePre * call s:auto_mkdir(expand('<afile>:p:h'), v:cmdbang)
     function! s:auto_mkdir(dir, force)
         if !isdirectory(a:dir) && (a:force ||
             \ input(printf('"%s" does not exist. Create? [y/N]', a:dir)) =~? '^y\%[es]$')
@@ -1030,14 +1080,14 @@ augroup END
 "
 " =======================================================================
 
-"autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-"autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-"autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-"autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-"autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+"autocmd MyAutoCmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+"autocmd MyAutoCmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+"autocmd MyAutoCmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+"autocmd MyAutoCmd FileType python setlocal omnifunc=pythoncomplete#Complete
+"autocmd MyAutoCmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 " template
-autocmd BufNewFile *.py 0r $HOME/.vim/template/template.python
+autocmd MyAutoCmd BufNewFile *.py 0r $HOME/.vim/template/template.python
 
 
 
