@@ -1,3 +1,23 @@
+snippet   pytest
+abbr      import pytest...
+prev_word '^'
+	#!/usr/bin/env python
+	# -*- coding: utf-8 -*-
+	import pytest
+	${1:from app import target_modle}
+	
+	class Test${2:TargetClassName}(object):
+		${3:pass}
+
+snippet   pytestm
+	def test_${1:method}(self${2:args}):
+		assert ${3:expression}
+
+snippet   pytestarg
+	def pytest_funcarg__${1:argname}(self):
+		return ${2:value}
+
+
 snippet   unittest
 abbr      import unittest...
 prev_word '^'
