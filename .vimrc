@@ -56,10 +56,6 @@ else
         \ "autoload": {
         \   "commands": ["Unite", "UniteWithBufferDir"]
         \ }}
-    NeoBundleLazy 'h1mesuke/unite-outline', {
-        \ "autoload": {
-        \   "unite_sources": ["outline"],
-        \ }}
     nnoremap [unite] <Nop>
     nmap U [unite]
     nnoremap <silent> [unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
@@ -67,7 +63,6 @@ else
     nnoremap <silent> [unite]r :<C-u>Unite register<CR>
     nnoremap <silent> [unite]m :<C-u>Unite file_mru<CR>
     nnoremap <silent> [unite]c :<C-u>Unite bookmark<CR>
-    nnoremap <silent> [unite]o :<C-u>Unite outline<CR>
     nnoremap <silent> [unite]t :<C-u>Unite tab<CR>
     nnoremap <silent> [unite]w :<C-u>Unite window<CR>
     let s:hooks = neobundle#get_hooks("unite.vim")
@@ -92,12 +87,22 @@ else
         endfunction
     endfunction
 
-    NeoBundle 'ujihisa/unite-colorscheme.git'
-    if globpath(&rtp, 'plugin/unite.vim') != ''
-    nnoremap [unite]sc :<C-u>Unite colorscheme <Cr>
-    endif
+    NeoBundleLazy 'h1mesuke/unite-outline', {
+        \ "autoload": {
+        \   "unite_sources": ["outline"],
+        \ }}
+    nnoremap <silent> [unite]o :<C-u>Unite outline<CR>
 
-    NeoBundle 'hakobe/unite-script.git'
+    NeoBundleLazy 'ujihisa/unite-colorscheme.git', {
+        \ "autoload": {
+        \   "unite_sources": ["colorscheme"],
+        \ }}
+    nnoremap <silent> [unite]sc :<C-u>Unite colorscheme<Cr>
+
+    NeoBundleLazy 'hakobe/unite-script.git', {
+        \ "autoload": {
+        \   "unite_sources": ["script"],
+        \ }}
 
 
 "    " ========
@@ -413,6 +418,10 @@ else
         \ "autoload": {
         \   "filetypes": ["python", "python3", "djangohtml"]
         \ }}
+    NeoBundleLazy 'kevinw/pyflakes-vim', {
+        \ "autoload": {
+        \   "filetypes": ["python", "python3"]
+        \ }}
     NeoBundleLazy 'nvie/vim-flake8', {
         \ "autoload": {
         \   "filetypes": ["python", "python3"]
@@ -423,16 +432,20 @@ else
         \ }}
     let s:hooks = neobundle#get_hooks("pytest.vim")
     function! s:hooks.on_source(bundle)
-        " ファイル全体に py.test を実行
         nmap <silent><Leader>tf <Esc>:Pytest file<CR>
-        " プロジェクト全体に py.test を実行
-        nmap <silent><Leader>tp <Esc>:Pytest project<CR>
-        " フォーカスのあたってるクラスに py.test を実行
+        nmap <silent><Leader>tfp <Esc>:Pytest file --pdb<CR>
+        nmap <silent><Leader>tfs <Esc>:Pytest file -s<CR>
         nmap <silent><Leader>tc <Esc>:Pytest class<CR>
-        " フォーカスのあたってるメソッドに py.test を実行
+        nmap <silent><Leader>tcp <Esc>:Pytest class --pdb<CR>
+        nmap <silent><Leader>tcs <Esc>:Pytest class -s<CR>
         nmap <silent><Leader>tm <Esc>:Pytest method<CR>
-        " エラーメッセージなどのログウィンドウ表示をトグル
+        nmap <silent><Leader>tmp <Esc>:Pytest method --pdb<CR>
+        nmap <silent><Leader>tms <Esc>:Pytest method -s<CR>
         nmap <silent><Leader>ts <Esc>:Pytest session<CR>
+
+        nmap <silent><Leader>tn <Esc>:Pytest next<CR>
+        nmap <silent><Leader>tp <Esc>:Pytest previous<CR>
+        nmap <silent><Leader>te <Esc>:Pytest error<CR>
     endfunction
 
     " ====
