@@ -105,38 +105,43 @@ else
         \ }}
 
 
-"    " ========
-"    " vimfiler
-"    " ========
-"    NeoBundleLazy "Shougo/vimfiler", {
-"        \ "depends": ["Shougo/unite.vim"],
-"        \ "autoload": {
-"        \   "commands": ["VimFilerTab", "VimFiler", "VimFilerExplorer"],
-"        \   "mappings": ['<Plug>(vimfiler_switch)'],
-"        \   "explorer": 1,
-"        \ }}
-"    nnoremap <C-e> :VimFilerExplorer<CR>
-"    " close vimfiler automatically when there are only vimfiler open
-"    autocmd MyAutoCmd BufEnter * if (winnr('$') == 1 && &filetype ==# 'vimfiler') | q | endif
-"    let s:hooks = neobundle#get_hooks("vimfiler")
-"    function! s:hooks.on_source(bundle)
-"        let g:vimfiler_as_default_explorer = 1
-"        let g:vimfiler_enable_auto_cd = 1
-"        
-"        "let g:vimfiler_ignore_pattern = "\%(^\..*\|\.pyc$\)"
-"        let g:vimfiler_ignore_pattern = "\%(^\.pyc$\)"
-"
-"        " vimfiler specific key mappings
-"        autocmd MyAutoCmd FileType vimfiler call s:vimfiler_settings()
-"        function! s:vimfiler_settings()
-"            " ^^ to go up
-"            nmap <buffer> ^^ <Plug>(vimfiler_switch_to_parent_directory)
-"            " use R to refresh
-"            nmap <buffer> R <Plug>(vimfiler_redraw_screen)
-"            " overwrite C-l
-"            nmap <buffer> <C-l> <C-w>l
-"        endfunction
-"    endfunction
+    " ========
+    " vimfiler
+    " ========
+    NeoBundle "Shougo/vimfiler", {
+        \ "depends": ["Shougo/unite.vim"],
+        \ "autoload": {
+        \   "commands": ["VimFilerTab", "VimFiler", "VimFilerExplorer", 
+        \                "VimFilerDouble"],
+        \   "mappings": ['<Plug>(vimfiler_switch)'],
+        \   "explorer": 1,
+        \ }}
+    nnoremap <C-e> :VimFilerExplorer<CR>
+    nnoremap <F10> :VimFiler<CR>
+    nnoremap <F11> :UniteBookmarkAdd<CR>
+    nnoremap <F12> :Unite bookmark<CR>
+    "nnoremap <c-e> :<c-u>:VimFiler -split -horizontal -project -toggle<cr>
+    " close vimfiler automatically when there are only vimfiler open
+    autocmd MyAutoCmd BufEnter * if (winnr('$') == 1 && &filetype ==# 'vimfiler') | q | endif
+    "autocmd MyAutoCmd FileType vimfiler nnoremap <silent><buffer> e :call <SID>vimfiler_tree_edit('open')<CR>
+    let g:vimfiler_as_default_explorer = 1
+    let g:vimfiler_safe_mode_by_default = 0
+    let g:vimfiler_enable_auto_cd = 0
+
+    "let g:vimfiler_ignore_pattern = '^\%(.pyc\|.git\|.DS_Store\)$'
+
+    " vimfiler specific key mappings
+    autocmd MyAutoCmd FileType vimfiler call s:vimfiler_settings()
+    function! s:vimfiler_settings()
+        " ^^ to go up
+        nmap <buffer> ^^ <Plug>(vimfiler_switch_to_parent_directory)
+        " use R to refresh
+        nmap <buffer> R <Plug>(vimfiler_redraw_screen)
+        " overwrite C-l
+        nmap <buffer> <C-l> <C-w>l
+    endfunction
+    autocmd MyAutoCmd VimEnter * if !argc() | execute 'VimFiler' | endif
+    "autocmd MyAutoCmd VimEnter * if !argc() | execute 'VimFilerExplorer' | endif
 
     " ===
     " Git
@@ -146,6 +151,12 @@ else
         \ "autoload": {
         \   "commands": ["Gist"],
         \ }}
+    nnoremap <silent> <space>gl :<C-u>Gist -l<CR>
+    nnoremap <silent> <space>gp :<C-u>Gist -p<CR>
+    nnoremap <silent> <space>gP :<C-u>Gist -P<CR>
+    nnoremap <silent> <space>gf :<C-u>Gist -f<CR>
+    nnoremap <silent> <space>gs :<C-u>Gist +1<CR>
+
     NeoBundle "tpope/vim-fugitive" " 遅延ロードができないらしい
     NeoBundleLazy "gregsexton/gitv", {
         \ "depends": ["tpope/vim-fugitive"],
@@ -168,26 +179,26 @@ else
     nmap g" cs"G
 
     NeoBundle 'vim-scripts/Align'
-    NeoBundle 'vim-scripts/YankRing.vim'
+    "NeoBundle 'vim-scripts/YankRing.vim'
     NeoBundle 'ack.vim'
 
     " ========
     " NERDTree
     " ========
-    NeoBundleLazy "scrooloose/nerdtree", {
-        \ "autoload": {
-        \   "commands": ["NERDTree", "NERDTreeToggle"],
-        \ }}
-    let file_name = expand("%:p")
-    if has('vim_starting') &&  file_name == ""
-        autocmd MyAutoCmd VimEnter * execute 'NERDTree ./'
-    endif
-    " CTRL + e : Toggle NERDTree window
-    nnoremap <c-e> :<c-u>:NERDTreeToggle<cr>
-    let s:hooks = neobundle#get_hooks("nerdtree")
-    function! s:hooks.on_source(bundle)
-        let NERDTreeIgnore = ['\.pyc$', '\.class$']
-    endfunction
+    " NeoBundleLazy "scrooloose/nerdtree", {
+    "     \ "autoload": {
+    "     \   "commands": ["NERDTree", "NERDTreeToggle"],
+    "     \ }}
+    " let file_name = expand("%:p")
+    " if has('vim_starting') && file_name == ""
+    "     autocmd MyAutoCmd VimEnter * execute 'NERDTree ./'
+    " endif
+    " " CTRL + e : Toggle NERDTree window
+    " nnoremap <c-e> :<c-u>:NERDTreeToggle<cr>
+    " let s:hooks = neobundle#get_hooks("nerdtree")
+    " function! s:hooks.on_source(bundle)
+    "     let NERDTreeIgnore = ['\.pyc$', '\.class$']
+    " endfunction
 
 
     " ===========
@@ -443,8 +454,10 @@ else
         nmap <silent><Leader>tms <Esc>:Pytest method -s<CR>
         nmap <silent><Leader>ts <Esc>:Pytest session<CR>
 
+        nmap <silent><Leader>tp <Esc>:Pytest project<CR>
+
         nmap <silent><Leader>tn <Esc>:Pytest next<CR>
-        nmap <silent><Leader>tp <Esc>:Pytest previous<CR>
+        "nmap <silent><Leader>tp <Esc>:Pytest previous<CR>
         nmap <silent><Leader>te <Esc>:Pytest error<CR>
     endfunction
 
@@ -454,6 +467,14 @@ else
     NeoBundleLazy 'vim-ruby/vim-ruby', {
         \ 'autoload' : {
         \     'filetypes' : ['ruby']
+        \ }}
+
+    " ======
+    " C/C++
+    " ======
+    NeoBundleLazy 'vim-scripts/c.vim', {
+        \ 'autoload' : {
+        \     'filetypes' : ['c', 'cpp']
         \ }}
 
     " ======
@@ -477,6 +498,7 @@ else
         let g:calendar_google_calendar = 1
         let g:calendar_google_task = 1
     endfunction
+
     NeoBundleLazy 'vim-scripts/TwitVim.git', {
         \ "autoload": {
         \   "commands": ["PosttoTwitter", "FriendsTwitter", "UserTwitter",
@@ -498,6 +520,22 @@ else
             "set nowrap
         endfunction
     endfunction
+
+    NeoBundleLazy 'kakkyz81/evervim', {
+        \ "autoload": {
+        \   "commands": ["EvervimNotebookList", "EvervimSearchByQuery", 
+        \                "EvervimCreateNote", "EvervimListTag", 
+        \                "EvervimReloadPref", "EvervimPageNext", 
+        \                "EvervimPagePrev", "EvervimOpenClient", 
+        \                "EvervimOpenBrowser", "EvervimSetup" ],
+        \ }}
+    let g:evervim_devtoken='S=s14:U=1e1c77:E=14ba3d43d7f:C=1444c231183:P=1cd:A=en-devtoken:V=2:H=e090fc426d6a8537e1ff8f3235e805ab'
+    let g:evervim_defaulttags='evervim,vim'
+
+    "
+    " theme
+    "
+    NeoBundle 'tomasr/molokai'
 
     " インストールされていないプラグインのチェックおよびダウンロード
     NeoBundleCheck
@@ -527,8 +565,7 @@ let mapleader = "\\"
 " コマンドラインの高さ(GUI使用時)
 "set cmdheight=2
 " カラースキーマ
-"colorscheme zenburn
-colorscheme desertEx
+colorscheme molokai
 
 "指定した文字数の背景色を強調する。
 "set colorcolumn=80
