@@ -1,0 +1,50 @@
+snippet jq
+abbr    $(function() {... 
+	$(function() {
+		${1}
+	});
+
+snippet fun
+abbr    function(... 
+	function (${1}) {
+		${2}
+	}
+
+snippet func
+abbr    function(... 
+	function ${1}(${2}) {
+		${3}
+	}
+
+snippet jsdocref
+abbr    http://www38.atwiki.jp/aias-jsstyleguide2/pages/14.html
+	http://www38.atwiki.jp/aias-jsstyleguide2/pages/14.html
+
+snippet doc
+abbr    jsdoc
+	/** 
+	 * ${1:name}
+	 */
+        
+snippet param
+abbr    @param
+	@param {${1:type}} ${2:description}
+
+snippet return
+abbr    @return
+	@return {${1:type}} ${2:description}
+
+snippet try
+abbr    Try/Catch
+	try {
+		${1:pass}
+	} catch (e) {
+		${2:error}
+	}
+
+snippet for
+abbr    for (... 
+	for (${1}) {
+		${2}
+	}
+
