@@ -122,11 +122,12 @@ else
     nnoremap <F12> :Unite bookmark<CR>
     "nnoremap <c-e> :<c-u>:VimFiler -split -horizontal -project -toggle<cr>
     " close vimfiler automatically when there are only vimfiler open
-    autocmd MyAutoCmd BufEnter * if (winnr('$') == 1 && &filetype ==# 'vimfiler') | q | endif
+    "autocmd MyAutoCmd BufEnter * if (winnr('$') == 1 && &filetype ==# 'vimfiler') | q | endif
     "autocmd MyAutoCmd FileType vimfiler nnoremap <silent><buffer> e :call <SID>vimfiler_tree_edit('open')<CR>
     let g:vimfiler_as_default_explorer = 1
     let g:vimfiler_safe_mode_by_default = 0
-    let g:vimfiler_enable_auto_cd = 0
+    let g:vimfiler_enable_auto_cd = 1
+    "let g:vimfiler_edit_action = 'tabopen'
 
     "let g:vimfiler_ignore_pattern = '^\%(.pyc\|.git\|.DS_Store\)$'
 
@@ -140,7 +141,7 @@ else
         " overwrite C-l
         nmap <buffer> <C-l> <C-w>l
     endfunction
-    autocmd MyAutoCmd VimEnter * if !argc() | execute 'VimFiler' | endif
+    "autocmd MyAutoCmd VimEnter * if !argc() | execute 'VimFiler' | endif
     "autocmd MyAutoCmd VimEnter * if !argc() | execute 'VimFilerExplorer' | endif
 
     " ===
