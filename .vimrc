@@ -1205,7 +1205,7 @@ nnoremap <silent> gR :call <SID>SearchGoogleTab()<CR>
 function! s:dash(...)
   let ft = &filetype
   if &filetype == 'python'
-    let ft = ft.'2'
+    let ft = ft.'3'
   endif
   let ft = ft.':'
   let word = len(a:000) == 0 ? input('Dash search: ', ft.expand('<cword>')) : ft.join(a:000, ' ')
