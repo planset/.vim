@@ -169,6 +169,12 @@ else
     " file,edit,search 
     " =================
     NeoBundle 'kien/ctrlp.vim'
+    let g:ctrlp_custom_ignore = {
+      \ 'dir':  '\v[\/]\.(git|hg|svn|env)$',
+      \ 'file': '\v\.(exe|so|dll|pyc)$',
+      \ 'link': 'some_bad_symbolic_links',
+      \ }
+
     NeoBundle 'fuenor/qfixgrep.git'
     NeoBundle 'thinca/vim-qfreplace'
 
