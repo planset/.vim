@@ -613,6 +613,12 @@ if $TMUX == ''
     else
         set clipboard& clipboard+=unnamed
     endif
+else
+    if has('unnamedplus')
+        set clipboard& clipboard+=unnamedplus,unnamed 
+    else
+        set clipboard& clipboard+=unnamed
+    endif
 endif
 "Vi互換をオフ
 set nocompatible
