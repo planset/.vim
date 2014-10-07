@@ -641,6 +641,8 @@ helptags ~/.vim/doc
 set helplang=ja,en
 "他で編集されたら読み込み直す
 set autoread
+"C-x, C-aを強制的に10進数にする
+set nrformats=
 
 " setting font
 if has('gui_running')
