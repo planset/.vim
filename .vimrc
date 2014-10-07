@@ -57,11 +57,11 @@ else
         \   "commands": ["Unite", "UniteWithBufferDir"]
         \ }}
     nnoremap [unite] <Nop>
-    nmap U [unite]
-    nnoremap <silent> [unite]f :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+    nmap <space>u [unite]
+    nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=files file<CR>
     nnoremap <silent> [unite]b :<C-u>Unite buffer<CR>
     nnoremap <silent> [unite]r :<C-u>Unite register<CR>
-    nnoremap <silent> [unite]m :<C-u>Unite file_mru<CR>
+    nnoremap <silent> [unite]m :<C-u>Unite file<CR>
     nnoremap <silent> [unite]c :<C-u>Unite bookmark<CR>
     nnoremap <silent> [unite]t :<C-u>Unite tab<CR>
     nnoremap <silent> [unite]w :<C-u>Unite window<CR>
@@ -169,6 +169,12 @@ else
     " file,edit,search 
     " =================
     NeoBundle 'kien/ctrlp.vim'
+    let g:ctrlp_custom_ignore = {
+      \ 'dir':  '\v[\/]\.(git|hg|svn|env)$',
+      \ 'file': '\v\.(exe|so|dll|pyc)$',
+      \ 'link': 'some_bad_symbolic_links',
+      \ }
+
     NeoBundle 'fuenor/qfixgrep.git'
     NeoBundle 'thinca/vim-qfreplace'
 
@@ -605,6 +611,12 @@ set noswapfile
 set browsedir=buffer
 if $TMUX == ''
     " YankRing
+    if has('unnamedplus')
+        set clipboard& clipboard+=unnamedplus,unnamed 
+    else
+        set clipboard& clipboard+=unnamed
+    endif
+else
     if has('unnamedplus')
         set clipboard& clipboard+=unnamedplus,unnamed 
     else
@@ -1210,7 +1222,7 @@ nnoremap <silent> gR :call <SID>SearchGoogleTab()<CR>
 function! s:dash(...)
   let ft = &filetype
   if &filetype == 'python'
-    let ft = ft.'2'
+    let ft = ft.'3'
   endif
   let ft = ft.':'
   let word = len(a:000) == 0 ? input('Dash search: ', ft.expand('<cword>')) : ft.join(a:000, ' ')
