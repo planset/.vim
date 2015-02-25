@@ -4,6 +4,9 @@ augroup MyAutoCmd
   autocmd!
 augroup END
 
+" pyenv
+let $PATH = "~/.pyenv/shims:".$PATH
+
 " =============
 " neobundle.vim
 " =============
@@ -277,6 +280,11 @@ else
         \ "autoload": {
         \   "insert": 1,
         \ }}
+    NeoBundleLazy "Shougo/neosnippet-snippets", {
+        \ "depends": ["Shougo/neosnippet.vim"],
+        \ "autoload": {
+        \   "insert": 1,
+        \ }}
     let s:hooks = neobundle#get_hooks("neosnippet.vim")
     function! s:hooks.on_source(bundle)
         " Plugin key-mappings.
@@ -391,13 +399,13 @@ else
     " ======
     " python
     " ======
-    " Djangoを正しくVimで読み込めるようにする
+    " Vimで正しくvirtualenvを処理できるようにする
     NeoBundleLazy "lambdalisue/vim-django-support", {
         \ "autoload": {
         \   "filetypes": ["python", "python3", "djangohtml"]
         \ }}
-    " Vimで正しくvirtualenvを処理できるようにする
-    NeoBundleLazy "jmcantrell/vim-virtualenv", {
+    " Djangoを正しくVimで読み込めるようにする
+    NeoBundleLazy "lambdalisue/vim-django-support", {
         \ "autoload": {
         \   "filetypes": ["python", "python3", "djangohtml"]
         \ }}
@@ -468,6 +476,29 @@ else
         nmap <silent><Leader>te <Esc>:Pytest error<CR>
     endfunction
 
+    NeoBundle 'planset/vim-ipython'
+    let g:ipy_perform_mappings = 0
+    let s:hooks = neobundle#get_hooks("vim-ipython")
+    function! s:hooks.on_source(bundle)
+        nmap <silent><space>is <Esc>:sp<CR><Esc><C-w><C-w><Esc>:VimShell<CR><Esc><C-w><C-w>:VimShellSendString ipython console<CR>
+
+        nmap <silent><space>ii :python run_this_file()<CR>
+        nmap <silent><space>l <Esc>:python run_this_line()<CR>
+        nmap <silent><space>l :python run_this_line()<CR>
+        vmap <silent><space>L :python run_these_lines()<CR>
+        nmap <silent><space>iu :python if update_subchannel_msgs(force=True): echo("vim-ipython shell updated",'Operator')<CR>
+        nmap <silent><space>it <Plug>(IPython-ToggleSendOnSave)
+
+        nmap <silent><space>iv
+    endfunction
+
+
+    " ====
+    " Go Lang Bundle
+    " ====
+    NeoBundle "majutsushi/tagbar"
+    NeoBundle "fatih/vim-go"
+
     " ====
     " ruby
     " ====
@@ -479,6 +510,7 @@ else
     " ======
     " C/C++
     " ======
+    let g:C_Ctrl_j = 'off'
     NeoBundleLazy 'vim-scripts/c.vim', {
         \ 'autoload' : {
         \     'filetypes' : ['c', 'cpp']
@@ -842,7 +874,7 @@ nnoremap <silent> <Space>er :tabe ~/.vimrc<CR>
 nnoremap <silent> <Space>rr :source ~/.vimrc<CR>
 
 " jjでESC
-inoremap jj <ESC>
+"inoremap jj <ESC>
 
 " C-jでESC
 inoremap <C-j> <ESC>
@@ -1082,6 +1114,13 @@ endfunction</cr></sid></cr></sid>
 function! s:Exec()
   if &ft == 'javascript'
     exe "VimProcBang node " . " %"
+  elseif &ft == 'python'
+    exe "VimProcBang python3 %"
+  elseif &ft == 'typescript'
+    "exe "VimProcBang tsc %"
+    exe "VimProcBang tsc --removeComments --sourcemap %"
+  elseif &ft == 'go'
+    exe "VimProcBang go run %"
   else
     exe "VimProcBang " . &ft . " %" 
   endif
@@ -1089,14 +1128,15 @@ function! s:Exec()
 command! Exec call <SID>Exec()
 map <silent> <Space>p :call <SID>Exec()<CR>
 
+
 "
 " python helper
 "
-function! s:ExecPython3()
-  exe "VimProcBang python3 %" 
+function! s:ExecPython2()
+  exe "VimProcBang python2 %" 
 :endfunction
-command! ExecPython3 call <SID>ExecPython3()
-nnoremap <silent> <Space>P :call <SID>ExecPython3()<CR>
+command! ExecPython2 call <SID>ExecPython2()
+nnoremap <silent> <Space>P :call <SID>ExecPython2()<CR>
 
 function! s:ExecNose()
   exe "VimProcBang nosetests"
@@ -1172,6 +1212,11 @@ function! s:call_grep_curdirall(args)"{{{
   "call unite#start(l:args, l:options)
 endfunction"}}}
 noremap ,g :<C-u>GrepCurDirAll<space>
+
+"
+"
+"
+au QuickfixCmdPost make,grep,grepadd,vimgrep copen
 
 
 " 
@@ -1269,8 +1314,14 @@ endfunction
 
 nmap <silent> ¥D :call QUERY_2_SELF_QUERY()<cr>
 
-
-
+"
+" "起動時にファイルを指定されなかった場合には、filetypeをpythonにする
+" ファイル名が指定されない場合は常にpython
+"
+let file_name = expand("%:p")
+if has('vim_starting') && file_name == ""
+    "set filetype=python
+endif
 
 
 " 参考にした資料
