@@ -576,6 +576,9 @@ else
     "
     NeoBundle 'tomasr/molokai'
 
+    " perl
+    NeoBundle 'vim-perl/vim-perl'
+
     " インストールされていないプラグインのチェックおよびダウンロード
     NeoBundleCheck
 endif
@@ -682,6 +685,8 @@ helptags ~/.vim/doc
 set helplang=ja,en
 "他で編集されたら読み込み直す
 set autoread
+"C-x, C-aを強制的に10進数にする
+set nrformats=
 
 " setting font
 if has('gui_running')
@@ -1292,6 +1297,22 @@ command! Utf8 edit ++enc=utf-8
 command! Jis Iso2022jp
 command! Sjis Cp932
 
+
+function! PerlBetaBetaToTmpl()
+	%s/¥t*print¥s¥="//g
+	%s/.n";//g
+	%s/¥"/"/g
+	set fileencoding=sjis
+	:w
+endfunction
+
+nmap <silent> ¥C :call PerlBetaBetaToTmpl()<cr>
+
+function! QUERY_2_SELF_QUERY()
+	%s/¥$QUERY{'¥([^']*¥)'}/$self->{QUERY}->{¥1}/g
+endfunction
+
+nmap <silent> ¥D :call QUERY_2_SELF_QUERY()<cr>
 
 "
 " "起動時にファイルを指定されなかった場合には、filetypeをpythonにする

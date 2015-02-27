@@ -4,4 +4,5 @@ autocmd BufNewFile,BufRead *.psgi   set filetype=perl
 autocmd BufNewFile,BufRead *.t      set filetype=perl
 
 autocmd BufNewFile,BufRead *.tt     set filetype=html
+autocmd BufNewFile,BufRead *.tmpl   set filetype=html
 
